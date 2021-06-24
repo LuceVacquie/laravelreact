@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use Inertia\Inertia;
 |
 */
 
+// Views
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -24,12 +26,35 @@ Route::get('/', function () {
     ]);
 });
 
+//User dashboard
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/contact-form', function () {
-    return Inertia::render('ContactForm');
-})->middleware(['auth', 'verified'])->name('contact-form');
+//User profile
+Route::get('/profile', function () {
+    return Inertia::render('Profile');
+})->middleware(['auth', 'verified'])->name('profile');
+
+//Edit profile form
+Route::get('/edit-profile-form', function () {
+    return Inertia::render('EditProfileForm');
+})->middleware(['auth', 'verified'])->name('edit-profile-form');
+
+//Schedule a one-to-one
+Route::get('/one-to-one-form', function () {
+    return Inertia::render('OneToOneForm');
+})->middleware(['auth', 'verified'])->name('one-to-one-form');
+
+//Requet time off
+Route::get('/holidays-form', function () {
+    return Inertia::render('HolidaysForm');
+})->middleware(['auth', 'verified'])->name('holidays-form');
+
+//Access user payroll
+Route::get('/payrolls', function () {
+    return Inertia::render('Payrolls');
+})->middleware(['auth', 'verified'])->name('payrolls');
 
 require __DIR__.'/auth.php';
+
