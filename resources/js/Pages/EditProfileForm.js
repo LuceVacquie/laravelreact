@@ -5,7 +5,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function EditProfileForm(props, {toggleEditMode}) {
+export default function EditProfileForm(props) {
 
     const [updatedInfo, setUpdatedInfo] = useState('')
 
@@ -13,10 +13,9 @@ export default function EditProfileForm(props, {toggleEditMode}) {
         setUpdatedInfo(target)
     }
 
-    const onSubmit = (event) => {
-        event.preventDefault()
-        if(!updatedInfo.title) return;
-        toggleEditMode();
+    const handleOnSubmit = (event) => {
+        event.preventDefault();
+        props.toggleEditMode();
     }
 
     return (
@@ -29,7 +28,7 @@ export default function EditProfileForm(props, {toggleEditMode}) {
                 </a>
             </nav>
 
-            <article>
+            <form action="submit" method="POST" onSubmit={(event) => handleOnSubmit(event)}>
             {/* Profile header */}
                 <div>
                     <div>
@@ -72,7 +71,7 @@ export default function EditProfileForm(props, {toggleEditMode}) {
 
                 {/* Description list */}
                 <div className="mt-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <form action="submit" method="POST" onSubmit={toggleEditMode} className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                         <div>
                             <div className="sm:col-span-1">
                                 <label htmlFor="job_role" className="text-sm font-medium text-gray-500">Job role</label>
@@ -93,6 +92,18 @@ export default function EditProfileForm(props, {toggleEditMode}) {
                                     name="email"
                                     id="email"
                                     placeholder={props.auth.user.email}
+                                    className="py-3 px-4 block w-full pl-20 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="sm:col-span-1">
+                            <label htmlFor="phone" className="text-sm font-medium text-gray-500">Phone</label>
+                                <input 
+                                    type="text"
+                                    name="phone"
+                                    id="phone"
+                                    placeholder={props.auth.user.phone}
                                     className="py-3 px-4 block w-full pl-20 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                                 />
                             </div>
@@ -145,9 +156,9 @@ export default function EditProfileForm(props, {toggleEditMode}) {
                                 />
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </article>
+            </form>
         </main>
     );
 }

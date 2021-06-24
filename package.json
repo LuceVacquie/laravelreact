@@ -27,6 +27,7 @@
         "tailwindcss": "^2.1.2"
     },
     "dependencies": {
-        "@heroicons/react": "^1.0.1"
+        "@heroicons/react": "^1.0.1",
+        "react-embedded-google-calendar": "^1.0.11"
     }
 }

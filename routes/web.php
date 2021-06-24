@@ -26,32 +26,37 @@ Route::get('/', function () {
     ]);
 });
 
-//User dashboard
+//Main navigation
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//User profile
+Route::get('/announcements', function () {
+    return Inertia::render('Announcements');
+})->middleware(['auth', 'verified'])->name('announcements');
+
+Route::get('/calendar', function () {
+    return Inertia::render('Calendar');
+})->middleware(['auth', 'verified'])->name('calendar');
+
+Route::get('/team', function () {
+    return Inertia::render('Team');
+})->middleware(['auth', 'verified'])->name('team');
+
+
+//Dashboard navigation
 Route::get('/profile', function () {
     return Inertia::render('Profile');
 })->middleware(['auth', 'verified'])->name('profile');
 
-//Edit profile form
-Route::get('/edit-profile-form', function () {
-    return Inertia::render('EditProfileForm');
-})->middleware(['auth', 'verified'])->name('edit-profile-form');
-
-//Schedule a one-to-one
 Route::get('/one-to-one-form', function () {
     return Inertia::render('OneToOneForm');
 })->middleware(['auth', 'verified'])->name('one-to-one-form');
 
-//Requet time off
 Route::get('/holidays-form', function () {
     return Inertia::render('HolidaysForm');
 })->middleware(['auth', 'verified'])->name('holidays-form');
 
-//Access user payroll
 Route::get('/payrolls', function () {
     return Inertia::render('Payrolls');
 })->middleware(['auth', 'verified'])->name('payrolls');

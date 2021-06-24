@@ -349,7 +349,8 @@ export default function Dashboard(props) {
                                             </div>
                                             <div className="mt-6">
                                             <a
-                                                href="#"
+                                                href={route('announcements')} 
+                                                active={route().current('announcements')}
                                                 className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                                             >
                                                 View all
