@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::get('/announcements', function () {
 Route::get('/calendar', function () {
     return Inertia::render('Calendar');
 })->middleware(['auth', 'verified'])->name('calendar');
+
+Route::get('/projects', function () {
+    return Inertia::render('Projects');
+})->middleware(['auth', 'verified'])->name('projects');
 
 Route::get('/team', function () {
     return Inertia::render('Team');

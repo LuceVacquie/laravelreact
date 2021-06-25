@@ -10,6 +10,9 @@ export default function Navbar() {
             <NavLink href={route('announcements')} active={route().current('announcements')}>
                 Announcements
             </NavLink>
+            <NavLink href={route('projects')} active={route().current('projects')}>
+                Projects
+            </NavLink>
             <NavLink href={route('calendar')} active={route().current('calendar')}>
                 Calendar
             </NavLink>

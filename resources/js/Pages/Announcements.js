@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import Input from '../Components/Input';
+import { useForm } from '@inertiajs/inertia-react';
 import {
   ChatAltIcon,
   PlusIcon,
@@ -70,22 +71,26 @@ function classNames(...classes) {
 }
 
 export default function Announcements(props) {
-
     const [isAddAnnouncementActive, setIsAddAnnouncementActive] = useState(false)
-    const [isDropdownActive, setIsDropdownActive] = useState(false)
 
-    const handleOnSubmit = (event) => {
-        event.preventDefault()
-        setIsAddAnnouncementActive(false)
-    }
+    const { data, setData, post } = useForm({
+        title: '',
+        category: '',
+        description: '',
+    });
 
-    const getAnnouncements = () => {
-        fetch()
-    }
+    const onHandleChange = ({target}) => {
+        const {name, value} = target
+        setData({name: value});
+    };
 
-    useEffect(()=>{
-        getAnnouncements()
-    }, [])
+    const submit = (e) => {
+        e.preventDefault();
+
+        post(route('announcement'));
+    };
+
+    console.log(props.auth.announcement)
 
   return (
     <Authenticated
@@ -184,45 +189,50 @@ export default function Announcements(props) {
                                                 </h2>
                                                 </button>
                                                 {isAddAnnouncementActive && 
-                                                    <form onSubmit={(event) => handleOnSubmit(event)}>
-                                                    <Input 
-                                                        type="text" 
-                                                        id="title-announcement" 
-                                                        name="title-announcement"
-                                                        placeholder="Title"
-                                                        className="mt-4 w-full"
-                                                    />
-                                                    {/* <div className="relative inline-block mt-4 w-full">
+                                                    <form onSubmit={submit} >
+                                                        <Input 
+                                                            type="text" 
+                                                            id="title-announcement" 
+                                                            name="title-announcement"
+                                                            value={data.title}
+                                                            placeholder="Title"
+                                                            autoComplete="title"
+                                                            className="mt-4 w-full"
+                                                            isFocused={true}
+                                                            handleChange={onHandleChange}
+                                                            required
+                                                        />
+                                                        <Input 
+                                                            type="text" 
+                                                            id="category-announcement" 
+                                                            name="category-announcement"
+                                                            value={data.category}
+                                                            placeholder="Category"
+                                                            autoComplete="category"
+                                                            className="mt-4 w-full"
+                                                            isFocused={true}
+                                                            handleChange={onHandleChange}
+                                                            required
+                                                        />
+                                                        <Input 
+                                                            type="text" 
+                                                            id="description-announcement" 
+                                                            name="description-announcement" 
+                                                            value={data.description}
+                                                            placeholder="Write your announcement here..."
+                                                            autoComplete="description"
+                                                            className="mt-4 w-full h-32"
+                                                            isFocused={true}
+                                                            handleChange={onHandleChange}
+                                                            required
+                                                        />
+                                                        
                                                         <button 
-                                                            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
-                                                            onClick={() => setIsDropdownActive(!isDropdownActive)}>
-                                                                Category
+                                                            type="submit"
+                                                            className="mt-4 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                        >
+                                                            Submit
                                                         </button>
-                                                        {
-                                                            isDropdownActive && 
-                                                            <div name="categories" id="categories" className="absolute bg-white w-full border-gray-300">
-                                                                <p className="hover:bg-indigo-300">Social events</p>
-                                                                <p className="hover:bg-indigo-300">Projects</p>
-                                                                <p className="hover:bg-indigo-300">Clients</p>
-                                                                <p className="hover:bg-indigo-300">Fun facts</p>
-                                                            </div>   
-                                                        }
-                                                         
-                                                    </div> */}
-                                                    <Input 
-                                                        type="text" 
-                                                        id="description-announcement" 
-                                                        name="description-announcement" 
-                                                        placeholder="Write your announcement here..."
-                                                        className="mt-4 w-full h-32"
-                                                    />
-                                                    
-                                                    <button 
-                                                        type="submit"
-                                                        className="mt-4 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                    >
-                                                        Submit
-                                                    </button>
 
                                                     </form>
                                                 }
@@ -233,62 +243,6 @@ export default function Announcements(props) {
                                         <div className="mt-4">
                                         <h1 className="sr-only">Announcements</h1>
                                         <ul className="space-y-4">
-                                        <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
-                                                <article aria-labelledby={props.announcement.title}>
-                                                <div>
-                                                    <div className="flex space-x-3">
-                                                        <div className="flex-shrink-0">
-                                                            <img className="h-10 w-10 rounded-full" src={props.auth.user.avatar} alt="" />
-                                                        </div>
-                                                        <div className="min-w-0 flex-1">
-                                                            <p className="text-sm font-medium text-gray-900">
-                                                                <a href="#" className="hover:underline">
-                                                                    {props.auth.announcements.created_by}
-                                                                </a>
-                                                            </p>
-                                                            <p className="text-sm text-gray-500">
-                                                                <a href="#" className="hover:underline">
-                                                                    <time dateTime={props.auth.announcements.created_at}>{props.auth.announcements.created_at}</time>
-                                                                </a>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <h2 id={props.auth.announcements.id} className="mt-4 text-base font-medium text-gray-900">
-                                                        {props.auth.announcements.title}
-                                                    </h2>
-                                                </div>
-                                                <div
-                                                    className="mt-2 text-sm text-gray-700 space-y-4"
-                                                    dangerouslySetInnerHTML={{ __html: props.auth.announcements.description }}
-                                                />
-                                                <div className="mt-6 flex justify-between space-x-8">
-                                                    <div className="flex space-x-6">
-                                                    <span className="inline-flex items-center text-sm">
-                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                        <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900"></span>
-                                                        <span className="sr-only">likes</span>
-                                                        </button>
-                                                    </span>
-                                                    <span className="inline-flex items-center text-sm">
-                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                        <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900"></span>
-                                                        <span className="sr-only">replies</span>
-                                                        </button>
-                                                    </span>
-                                                    </div>
-                                                    <div className="flex text-sm">
-                                                    <span className="inline-flex items-center text-sm">
-                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                        <ShareIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">Share</span>
-                                                        </button>
-                                                    </span>
-                                                    </div>
-                                                </div>
-                                                </article>
-                                            </li>
                                             
                                             {questions.map((question) => (
                                             <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
