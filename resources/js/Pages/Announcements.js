@@ -83,11 +83,13 @@ export default function Announcements(props) {
         const {name, value} = target
         setData({name: value});
     };
-
+    console.log('hello')
     const submit = (e) => {
         e.preventDefault();
 
         post(route('announcement'));
+
+        console.log('hello')
     };
 
     console.log(props.auth.announcement)

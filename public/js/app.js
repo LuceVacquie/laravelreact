@@ -20836,9 +20836,12 @@ function Announcements(props) {
     });
   };
 
+  console.log('hello');
+
   var submit = function submit(e) {
     e.preventDefault();
     post(route('announcement'));
+    console.log('hello');
   };
 
   console.log(props.auth.announcement);

@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Announcement;
+use App\Http\Controllers\Controller;
 
 class AnnouncementController extends Controller
 {
+    public function create()
+    {
+        return Inertia::render('Auth/Announcement');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
