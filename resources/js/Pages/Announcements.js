@@ -1,25 +1,14 @@
-import { Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
-import { Menu, Transition } from '@headlessui/react';
+import Input from '../Components/Input';
 import {
   ChatAltIcon,
-  CodeIcon,
-  DotsVerticalIcon,
-  EyeIcon,
-  FlagIcon,
   PlusIcon,
   ShareIcon,
-  StarIcon,
   ThumbUpIcon,
 } from '@heroicons/react/solid';
-import { FireIcon, HomeIcon, TrendingUpIcon, UserGroupIcon } from '@heroicons/react/outline'
+import { FireIcon, HomeIcon, TrendingUpIcon } from '@heroicons/react/outline'
 
-const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelseahagon@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
   { name: 'Popular', href: '#', icon: FireIcon, current: false },
@@ -81,6 +70,23 @@ function classNames(...classes) {
 }
 
 export default function Announcements(props) {
+
+    const [isAddAnnouncementActive, setIsAddAnnouncementActive] = useState(false)
+    const [isDropdownActive, setIsDropdownActive] = useState(false)
+
+    const handleOnSubmit = (event) => {
+        event.preventDefault()
+        setIsAddAnnouncementActive(false)
+    }
+
+    const getAnnouncements = () => {
+        fetch()
+    }
+
+    useEffect(()=>{
+        getAnnouncements()
+    }, [])
+
   return (
     <Authenticated
     auth={props.auth}
@@ -88,13 +94,14 @@ export default function Announcements(props) {
     header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
     >
         <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="min-h-screen bg-gray-100">
                         <div className="min-h-screen bg-gray-100">
 
                             <div className="py-10">
-                                <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                                {/* <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8"> */}
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
                                     <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
                                         <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
                                             <div className="pb-8 space-y-1">
@@ -122,51 +129,167 @@ export default function Announcements(props) {
                                         </nav>
                                     </div>
                                     <main className="lg:col-span-9 xl:col-span-6">
+                                        {/* Announcement button filters */}
                                         <div className="px-4 sm:px-0">
-                                        <div className="sm:hidden">
-                                            <label htmlFor="question-tabs" className="sr-only">
-                                            Select a tab
-                                            </label>
-                                            <select
-                                            id="question-tabs"
-                                            className="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500"
-                                            defaultValue={tabs.find((tab) => tab.current).name}
-                                            >
-                                            {tabs.map((tab) => (
-                                                <option key={tab.name}>{tab.name}</option>
-                                            ))}
-                                            </select>
-                                        </div>
-                                        <div className="hidden sm:block">
-                                            <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
-                                            {tabs.map((tab, tabIdx) => (
-                                                <a
-                                                key={tab.name}
-                                                href={tab.href}
-                                                aria-current={tab.current ? 'page' : undefined}
-                                                className={classNames(
-                                                    tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
-                                                    tabIdx === 0 ? 'rounded-l-lg' : '',
-                                                    tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
-                                                    'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10'
-                                                )}
+                                            <div className="sm:hidden">
+                                                <label htmlFor="question-tabs" className="sr-only">
+                                                Select a tab
+                                                </label>
+                                                <select
+                                                id="question-tabs"
+                                                className="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500"
+                                                defaultValue={tabs.find((tab) => tab.current).name}
                                                 >
-                                                <span>{tab.name}</span>
-                                                <span
-                                                    aria-hidden="true"
-                                                    className={classNames(
-                                                    tab.current ? 'bg-rose-500' : 'bg-transparent',
-                                                    'absolute inset-x-0 bottom-0 h-0.5'
-                                                    )}
-                                                />
-                                                </a>
-                                            ))}
-                                            </nav>
+                                                    {tabs.map((tab) => (
+                                                        <option key={tab.name}>{tab.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="hidden sm:block">
+                                                <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
+                                                    {tabs.map((tab, tabIdx) => (
+                                                        <a
+                                                        key={tab.name}
+                                                        href={tab.href}
+                                                        aria-current={tab.current ? 'page' : undefined}
+                                                        className={classNames(
+                                                            tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
+                                                            tabIdx === 0 ? 'rounded-l-lg' : '',
+                                                            tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
+                                                            'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10'
+                                                        )}
+                                                        >
+                                                            <span>{tab.name}</span>
+                                                            <span
+                                                                aria-hidden="true"
+                                                                className={classNames(
+                                                                tab.current ? 'bg-rose-500' : 'bg-transparent',
+                                                                'absolute inset-x-0 bottom-0 h-0.5'
+                                                                )}
+                                                            />
+                                                        </a>
+                                                    ))}
+                                                </nav>
+                                            </div>
                                         </div>
-                                        </div>
+
+                                        {/* Add an announcement */}
                                         <div className="mt-4">
-                                        <h1 className="sr-only">Recent questions</h1>
+                                            <h1 className="sr-only">Add an announcement</h1>
+                                            <div className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                                                <button
+                                                    onClick={() => setIsAddAnnouncementActive(!isAddAnnouncementActive)}>
+                                                    <h2 id="who-to-follow-heading" className="text-base font-medium text-gray-900">
+                                                    Something to say?
+                                                </h2>
+                                                </button>
+                                                {isAddAnnouncementActive && 
+                                                    <form onSubmit={(event) => handleOnSubmit(event)}>
+                                                    <Input 
+                                                        type="text" 
+                                                        id="title-announcement" 
+                                                        name="title-announcement"
+                                                        placeholder="Title"
+                                                        className="mt-4 w-full"
+                                                    />
+                                                    {/* <div className="relative inline-block mt-4 w-full">
+                                                        <button 
+                                                            className="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+                                                            onClick={() => setIsDropdownActive(!isDropdownActive)}>
+                                                                Category
+                                                        </button>
+                                                        {
+                                                            isDropdownActive && 
+                                                            <div name="categories" id="categories" className="absolute bg-white w-full border-gray-300">
+                                                                <p className="hover:bg-indigo-300">Social events</p>
+                                                                <p className="hover:bg-indigo-300">Projects</p>
+                                                                <p className="hover:bg-indigo-300">Clients</p>
+                                                                <p className="hover:bg-indigo-300">Fun facts</p>
+                                                            </div>   
+                                                        }
+                                                         
+                                                    </div> */}
+                                                    <Input 
+                                                        type="text" 
+                                                        id="description-announcement" 
+                                                        name="description-announcement" 
+                                                        placeholder="Write your announcement here..."
+                                                        className="mt-4 w-full h-32"
+                                                    />
+                                                    
+                                                    <button 
+                                                        type="submit"
+                                                        className="mt-4 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                    >
+                                                        Submit
+                                                    </button>
+
+                                                    </form>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        {/* Display announcements */}
+                                        <div className="mt-4">
+                                        <h1 className="sr-only">Announcements</h1>
                                         <ul className="space-y-4">
+                                        <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                                                <article aria-labelledby={props.announcement.title}>
+                                                <div>
+                                                    <div className="flex space-x-3">
+                                                        <div className="flex-shrink-0">
+                                                            <img className="h-10 w-10 rounded-full" src={props.auth.user.avatar} alt="" />
+                                                        </div>
+                                                        <div className="min-w-0 flex-1">
+                                                            <p className="text-sm font-medium text-gray-900">
+                                                                <a href="#" className="hover:underline">
+                                                                    {props.auth.announcements.created_by}
+                                                                </a>
+                                                            </p>
+                                                            <p className="text-sm text-gray-500">
+                                                                <a href="#" className="hover:underline">
+                                                                    <time dateTime={props.auth.announcements.created_at}>{props.auth.announcements.created_at}</time>
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <h2 id={props.auth.announcements.id} className="mt-4 text-base font-medium text-gray-900">
+                                                        {props.auth.announcements.title}
+                                                    </h2>
+                                                </div>
+                                                <div
+                                                    className="mt-2 text-sm text-gray-700 space-y-4"
+                                                    dangerouslySetInnerHTML={{ __html: props.auth.announcements.description }}
+                                                />
+                                                <div className="mt-6 flex justify-between space-x-8">
+                                                    <div className="flex space-x-6">
+                                                    <span className="inline-flex items-center text-sm">
+                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                                                        <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+                                                        <span className="font-medium text-gray-900"></span>
+                                                        <span className="sr-only">likes</span>
+                                                        </button>
+                                                    </span>
+                                                    <span className="inline-flex items-center text-sm">
+                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                                                        <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
+                                                        <span className="font-medium text-gray-900"></span>
+                                                        <span className="sr-only">replies</span>
+                                                        </button>
+                                                    </span>
+                                                    </div>
+                                                    <div className="flex text-sm">
+                                                    <span className="inline-flex items-center text-sm">
+                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                                                        <ShareIcon className="h-5 w-5" aria-hidden="true" />
+                                                        <span className="font-medium text-gray-900">Share</span>
+                                                        </button>
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                                </article>
+                                            </li>
+                                            
                                             {questions.map((question) => (
                                             <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
                                                 <article aria-labelledby={'question-title-' + question.id}>
@@ -186,81 +309,6 @@ export default function Announcements(props) {
                                                                     <time dateTime={question.datetime}>{question.date}</time>
                                                                 </a>
                                                             </p>
-                                                        </div>
-                                                        <div className="flex-shrink-0 self-center flex">
-                                                            <Menu as="div" className="relative inline-block text-left">
-                                                            {({ open }) => (
-                                                                <>
-                                                                    <div>
-                                                                        <Menu.Button className="-m-2 p-2 rounded-full flex items-center text-gray-400 hover:text-gray-600">
-                                                                            <span className="sr-only">Open options</span>
-                                                                            <DotsVerticalIcon className="h-5 w-5" aria-hidden="true" />
-                                                                        </Menu.Button>
-                                                                    </div>
-
-                                                                    <Transition
-                                                                        show={open}
-                                                                        as={Fragment}
-                                                                        enter="transition ease-out duration-100"
-                                                                        enterFrom="transform opacity-0 scale-95"
-                                                                        enterTo="transform opacity-100 scale-100"
-                                                                        leave="transition ease-in duration-75"
-                                                                        leaveFrom="transform opacity-100 scale-100"
-                                                                        leaveTo="transform opacity-0 scale-95"
-                                                                    >
-                                                                        <Menu.Items
-                                                                        static
-                                                                        className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                                                        >
-                                                                            <div className="py-1">
-                                                                                <Menu.Item>
-                                                                                    {({ active }) => (
-                                                                                        <a
-                                                                                        href="#"
-                                                                                        className={classNames(
-                                                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                                            'flex px-4 py-2 text-sm'
-                                                                                        )}
-                                                                                        >
-                                                                                            <StarIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                                                            <span>Add to favorites</span>
-                                                                                        </a>
-                                                                                    )}
-                                                                                </Menu.Item>
-                                                                                <Menu.Item>
-                                                                                    {({ active }) => (
-                                                                                        <a
-                                                                                        href="#"
-                                                                                        className={classNames(
-                                                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                                            'flex px-4 py-2 text-sm'
-                                                                                        )}
-                                                                                        >
-                                                                                            <CodeIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                                                            <span>Embed</span>
-                                                                                        </a>
-                                                                                    )}
-                                                                                </Menu.Item>
-                                                                                <Menu.Item>
-                                                                                    {({ active }) => (
-                                                                                        <a
-                                                                                        href="#"
-                                                                                        className={classNames(
-                                                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                                            'flex px-4 py-2 text-sm'
-                                                                                        )}
-                                                                                        >
-                                                                                            <FlagIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                                                            <span>Report content</span>
-                                                                                        </a>
-                                                                                    )}
-                                                                                </Menu.Item>
-                                                                            </div>
-                                                                        </Menu.Items>
-                                                                    </Transition>
-                                                                </>
-                                                            )}
-                                                            </Menu>
                                                         </div>
                                                     </div>
                                                     <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
@@ -285,13 +333,6 @@ export default function Announcements(props) {
                                                         <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
                                                         <span className="font-medium text-gray-900">{question.replies}</span>
                                                         <span className="sr-only">replies</span>
-                                                        </button>
-                                                    </span>
-                                                    <span className="inline-flex items-center text-sm">
-                                                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">{question.views}</span>
-                                                        <span className="sr-only">views</span>
                                                         </button>
                                                     </span>
                                                     </div>

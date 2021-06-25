@@ -116,8 +116,8 @@ export default function Dashboard(props) {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden sm:rounded-lg">
                         <div className="min-h-screen bg-gray-100">
                             <Popover as="header" className="pb-24 bg-gradient-to-r from-light-blue-800 to-cyan-600">
                                 {({ open }) => (
@@ -214,7 +214,6 @@ export default function Dashboard(props) {
                                 )}
                             </Popover>
                             <main className="-mt-24 pb-8">
-                                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                                 <h1 className="sr-only">Profile</h1>
                                 {/* Main 3 column grid */}
                                 <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8">
@@ -364,20 +363,11 @@ export default function Dashboard(props) {
                                         <ManagerList/>
                                     </div>
                                 </div>
-                                </div>
                             </main>
-                            <footer>
-                                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
-                                <div className="border-t border-gray-200 py-8 text-sm text-gray-500 text-center sm:text-left">
-                                    <span className="block sm:inline">&copy; 2021 Tailwind Labs Inc.</span>{' '}
-                                    <span className="block sm:inline">All rights reserved.</span>
-                                </div>
-                                </div>
-                            </footer>
-                            </div>
                         </div>
                     </div>
                 </div>
-        </Authenticated>
+            </div>
+    </Authenticated>
     );
 }

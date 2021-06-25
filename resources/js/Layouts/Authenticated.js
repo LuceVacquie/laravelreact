@@ -1,6 +1,7 @@
 import ApplicationLogo from '../Components/ApplicationLogo';
 import Dropdown from '../Components/Dropdown';
-import NavLink from '../Components/NavLink';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 import React, { useState } from 'react';
 import ResponsiveNavLink from '../Components/ResponsiveNavLink';
 import { InertiaLink } from '@inertiajs/inertia-react';
@@ -21,18 +22,7 @@ export default function Authenticated({ auth, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
-                                </NavLink>
-                                <NavLink href={route('announcements')} active={route().current('announcements')}>
-                                    Announcements
-                                </NavLink>
-                                <NavLink href={route('calendar')} active={route().current('calendar')}>
-                                    Calendar
-                                </NavLink>
-                                <NavLink href={route('team')} active={route().current('team')}>
-                                    Team
-                                </NavLink>
+                                <Navbar/>
                             </div>
                         </div>
 
@@ -131,6 +121,7 @@ export default function Authenticated({ auth, header, children }) {
             )}
 
             <main>{children}</main>
+            <Footer/>
         </div>
     );
 }

@@ -1,7 +1,61 @@
 import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
+import AndrewAvatar from '../../../public/assets/team_andrew.jpg';
+import TomAvatar from '../../../public/assets/team_thomas.jpg';
+import JonathanAvatar from '../../../public/assets/team_jonathan.jpg';
+import KarlAvatar from '../../../public/assets/team_karl.jpg';
+import JoeAvatar from '../../../public/assets/team_joe.jpg';
+import JackAvatar from '../../../public/assets/team_jack.jpg';
+import MarkAvatar from '../../../public/assets/team_mark.jpg';
   
-  export default function Team(props) {
+export default function Team(props) {
+
+
+    const teamMembers = [
+        {
+            name: 'Andrew Claypole',
+            job_role: 'Managing Director',
+            email: "andrew@reachstudios.co.uk",
+            avatar: AndrewAvatar,
+        },
+        {
+            name: 'Jonathan Ward',
+            job_role: 'Commercial Director',
+            email: "jonathan@reachstudios.co.uk",
+            avatar: JonathanAvatar,
+        },
+        {
+            name: 'Tom King',
+            job_role: 'Technical Director',
+            email: "tom@reachstudios.co.uk",
+            avatar: TomAvatar,
+        },
+        {
+            name: 'Karl Nuttall',
+            job_role: 'Creative Director',
+            email: "karl@reachstudios.co.uk",
+            avatar: KarlAvatar,
+        },
+        {
+            name: 'Joe Phillips',
+            job_role: 'Junior web dev',
+            email: "joe@reachstudios.co.uk",
+            avatar: JoeAvatar,
+        },
+        {
+            name: 'Jack Bowling',
+            job_role: 'Junior web dev',
+            email: "jack@reachstudios.co.uk",
+            avatar: JackAvatar,
+        },
+        {
+            name: 'Mark Goy',
+            job_role: 'Junior web dev',
+            email: "mark@reachstudios.co.uk",
+            avatar: MarkAvatar,
+        },
+    ]
+
     return (
         <Authenticated
             auth={props.auth}
@@ -16,22 +70,26 @@ import Authenticated from '@/Layouts/Authenticated';
                                 <div className="max-w-7xl mx-auto py-12 px-4 text-center sm:px-6 lg:px-8 lg:py-24">
                                     <div className="space-y-12">
                                         <div className="space-y-5 sm:mx-auto sm:max-w-xl sm:space-y-4 lg:max-w-5xl">
-                                            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Meet our team</h2>
+                                            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Need to make contact</h2>
                                             <p className="text-xl text-gray-500">
                                                 Ornare sagittis, suspendisse in hendrerit quis. Sed dui aliquet lectus sit pretium egestas vel mattis
                                                 neque.
                                             </p>
                                         </div>
                                         <ul className="mx-auto space-y-16 sm:grid sm:grid-cols-2 sm:gap-16 sm:space-y-0 lg:grid-cols-3 lg:max-w-5xl">
-                                            {users.map((user) => (
-                                                <li key={user.name}>
+                                            {teamMembers.map((member) => (
+                                                <li key={member.name}>
                                                     <div className="space-y-6">
-                                                        <img className="mx-auto h-40 w-40 rounded-full xl:w-56 xl:h-56" src={user.avatar} alt="" />
+                                                        <a 
+                                                            href={route('other-user-profile')} 
+                                                            active={route().current('other-user-profile')}>
+                                                            <img className="mx-auto h-40 w-40 rounded-full xl:w-56 xl:h-56" src={member.avatar} alt="" />
+                                                        </a>
                                                         <div className="space-y-2">
                                                             <div className="text-lg leading-6 font-medium space-y-1">
-                                                                <h3>{user.first_name} {user.last_name}</h3>
-                                                                <p className="text-indigo-600">{user.job_role}</p>
-                                                                <p className="text-indigo-600">{user.email}</p>
+                                                                <h3>{member.name}</h3>
+                                                                <p className="text-indigo-600">{member.job_role}</p>
+                                                                <p className="text-indigo-400">{member.email}</p>
                                                             </div>
                                                             {/* <ul className="flex justify-center space-x-5">
                                                                 <li>

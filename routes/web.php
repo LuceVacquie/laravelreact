@@ -61,5 +61,9 @@ Route::get('/payrolls', function () {
     return Inertia::render('Payrolls');
 })->middleware(['auth', 'verified'])->name('payrolls');
 
+Route::get('/other-user-profile', function () {
+    return Inertia::render('OtherUserProfile');
+})->middleware(['auth', 'verified'])->name('other-user-profile');
+
 require __DIR__.'/auth.php';
 

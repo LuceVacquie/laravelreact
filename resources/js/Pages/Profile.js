@@ -9,13 +9,6 @@ import EditProfileForm from './EditProfileForm';
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
-  
-  const profile = {
-    avatar:
-      'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
-    banner:
-      'https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  }
 
 export default function Profile( props ) {
 
@@ -77,7 +70,7 @@ export default function Profile( props ) {
                                         {/* Profile header */}
                                         <div>
                                             <div>
-                                            <img className="h-32 w-full object-cover lg:h-48" src={props.auth.user.banner} alt="User banner" />
+                                            <img className="h-32 w-full object-cover lg:h-48" src={"/images/" + props.auth.user.banner} alt="User banner" />
                                             </div>
                                             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                                             <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
