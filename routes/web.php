@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AnnouncementController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Auth\ProfileController;
 
 /*
@@ -32,10 +32,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/announcements', function () {
-    return Inertia::render('Announcements');
-})->middleware(['auth', 'verified'])->name('announcements');
 
 Route::get('/calendar', function () {
     return Inertia::render('Calendar');
@@ -75,7 +71,14 @@ Route::get('/other-user-profile', function () {
     return Inertia::render('OtherUserProfile');
 })->middleware(['auth', 'verified'])->name('other-user-profile');
 
-Route::get('announcement')->name('announcement')->uses('AnnouncementController@index')->middleware(['auth', 'verified']);
+
+
+
+// Announcements
+Route::post('/announcements', [AnnouncementController::class, 'store'])->middleware(['auth', 'verified'])->name('announcements');
+
+Route::get('/announcements', [AnnouncementController::class, 'index'])->middleware(['auth', 'verified'])->name('announcements');
+
 
 require __DIR__.'/auth.php';
 

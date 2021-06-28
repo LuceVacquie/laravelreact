@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Announcement;
@@ -12,12 +12,7 @@ class AnnouncementController extends Controller
   
     public function index()
     {
-        return Inertia::render('Auth/Announcement',Announcement::all());
-    }
-
-    public function create()
-    {
-        return Inertia::render('Auth/Announcement');
+        return Inertia::render('Announcements', ['data' => Announcement::all()]);
     }
 
     public function store(Request $request)
@@ -38,6 +33,4 @@ class AnnouncementController extends Controller
 
         return redirect(route('announcements'));
     }
-   
-
 }
