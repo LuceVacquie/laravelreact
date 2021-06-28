@@ -9,6 +9,18 @@ use Inertia\Inertia;
 
 class AnnouncementController extends Controller
 {
+  
+    public function index()
+    {
+        $announcement = Announcement::all();
+        return response()->json([
+            'status'=> 200,
+            'announcement'=>$announcement
+
+        ]);
+
+    }
+
     public function create()
     {
         return Inertia::render('Auth/Announcement');
@@ -30,7 +42,8 @@ class AnnouncementController extends Controller
             'created_by' => $request->created_by,
         ]);
 
-        return back();
+        return redirect(route('announcements'));
     }
+   
 
 }

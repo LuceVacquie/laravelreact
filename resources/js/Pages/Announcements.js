@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import Input from '../Components/Input';
 import { useForm } from '@inertiajs/inertia-react';
@@ -8,7 +8,8 @@ import {
   ShareIcon,
   ThumbUpIcon,
 } from '@heroicons/react/solid';
-import { FireIcon, HomeIcon, TrendingUpIcon } from '@heroicons/react/outline'
+import { FireIcon, HomeIcon, TrendingUpIcon } from '@heroicons/react/outline';
+import axios from 'axios';
 
 const navigation = [
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
@@ -40,7 +41,7 @@ const announcements = [
     body:
       '\n          <p>\n            Jurassic Park was an incredible idea and a magnificent feat of engineering, but poor protocols and a disregard for human safety killed what could have otherwise been one of the best businesses of our generation.\n          </p>\n          <p>\n            Ultimately, I think that if you wanted to run the park successfully and keep visitors safe, the most important thing to prioritize would be&hellip;\n          </p>\n        ',
   },
-  // More announcements...
+
 ]
 const whoToFollow = [
   {
@@ -71,6 +72,11 @@ function classNames(...classes) {
 }
 
 export default function Announcements(props) {
+    const [listAnnouncements, setListAnnouncements] = useState({
+        announcements: [],
+        loading: true,
+    });
+
     const [isAddAnnouncementActive, setIsAddAnnouncementActive] = useState(false)
 
     const { data, setData, post } = useForm({
@@ -87,13 +93,25 @@ export default function Announcements(props) {
 
     const submit = (e) => {
         e.preventDefault();
+        setListAnnouncements(prev => [data, ...prev]);
+        setData({});
         setIsAddAnnouncementActive(!isAddAnnouncementActive);
         post(route('announcement'));
     };
 
-    //fetch data 
-
-    console.log(props.auth.announcement)
+    const getAnnouncements = async () => {
+        const dataAnnouncement = await axios.get('http://127.0.0.1:8000/api/announcement')
+        if(dataAnnouncement.data.status === 200){
+            setListAnnouncements({
+                announcements: resizeBy.data.announcements,
+                loading: false,
+            })
+        }
+        console.log(dataAnnouncement.data)
+    }
+    
+    getAnnouncements()
+    console.log(listAnnouncements)
 
   return (
     <Authenticated
@@ -249,14 +267,15 @@ export default function Announcements(props) {
                                             
                                             {announcements.map((announcement) => (
                                             <li key={announcement.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
-                                                <article aria-labelledby={'announcement-title-' + announcement.id}>
+                                                {/* <article aria-labelledby={'announcement-title-' + announcement.id}> */}
+                                                <article aria-labelledby={announcement.id}>
                                                 <div>
                                                     <div className="flex space-x-3">
                                                         <div className="flex-shrink-0">
-                                                            <img className="h-10 w-10 rounded-full" src={announcement.author.imageUrl} alt="" />
+                                                            {/* <img className="h-10 w-10 rounded-full" src={announcement.author.imageUrl} alt="" /> */}
                                                         </div>
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="text-sm font-medium text-gray-900">
+                                                            {/* <p className="text-sm font-medium text-gray-900">
                                                                 <a href={announcement.author.href} className="hover:underline">
                                                                     {announcement.author.name}
                                                                 </a>
@@ -265,7 +284,7 @@ export default function Announcements(props) {
                                                                 <a href={announcement.href} className="hover:underline">
                                                                     <time dateTime={announcement.datetime}>{announcement.date}</time>
                                                                 </a>
-                                                            </p>
+                                                            </p> */}
                                                         </div>
                                                     </div>
                                                     <h2 id={'announcement-title-' + announcement.id} className="mt-4 text-base font-medium text-gray-900">
@@ -274,21 +293,21 @@ export default function Announcements(props) {
                                                 </div>
                                                 <div
                                                     className="mt-2 text-sm text-gray-700 space-y-4"
-                                                    dangerouslySetInnerHTML={{ __html: announcement.body }}
+                                                    dangerouslySetInnerHTML={{ __html: announcement.description }}
                                                 />
                                                 <div className="mt-6 flex justify-between space-x-8">
                                                     <div className="flex space-x-6">
                                                     <span className="inline-flex items-center text-sm">
                                                         <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                                         <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">{announcement.likes}</span>
+                                                        {/* <span className="font-medium text-gray-900">{announcement.likes}</span> */}
                                                         <span className="sr-only">likes</span>
                                                         </button>
                                                     </span>
                                                     <span className="inline-flex items-center text-sm">
                                                         <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                                         <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">{announcement.replies}</span>
+                                                        {/* <span className="font-medium text-gray-900">{announcement.replies}</span> */}
                                                         <span className="sr-only">replies</span>
                                                         </button>
                                                     </span>

@@ -76,3 +76,5 @@ Route::get('/other-user-profile', function () {
 })->middleware(['auth', 'verified'])->name('other-user-profile');
 
 require __DIR__.'/auth.php';
+
+

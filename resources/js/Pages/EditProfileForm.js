@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
 import { useForm } from '@inertiajs/inertia-react';
 
@@ -8,11 +8,12 @@ function classNames(...classes) {
 
 export default function EditProfileForm({ setEditMode, ...props }) {
 
-    const [selectedImage, setSelectedImage] = useState('')
-
     const { data, setData, post } = useForm({
         first_name: '',
         last_name: '',
+        job_role:'',
+        manager: '',
+        start_date: '',
         email: '',
         phone: '',
         street_address: '',
@@ -29,8 +30,8 @@ export default function EditProfileForm({ setEditMode, ...props }) {
     };
 
     const selectImageHandler = ({target}) => {
-        setSelectedImage(target.files[0]);
-        console.log(target.files[0])
+        setData('avatar', target.files[0]);
+        setData('banner', target.files[0]);
     }
 
     const submit = (e) => {
@@ -38,6 +39,8 @@ export default function EditProfileForm({ setEditMode, ...props }) {
         setEditMode(false);
         post(route('edit-profile'));
     };
+
+    console.log(props.auth)
 
     return (
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
@@ -55,27 +58,24 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                     <div>
                         <img 
                             className="h-32 w-full object-cover lg:h-48" 
-                            src={"/profile-banners/" + props.auth.user.banner} 
+                            src={props.auth.user.banner} 
                             alt="User banner" 
                         />
                         
                     </div>
 
-                    {/* <input 
+                    <input 
                         type="file" 
-                        // id="user-banner" 
                         name="banner"
-                        // value={data.banner}
-                        // autoComplete="banner"
                         onChange={selectImageHandler}
-                    /> */}
+                    />
                   
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                             <div className="flex">
                                 <img
                                     className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                                    src={"/profile-avatars/" + props.auth.user.avatar}
+                                    src={props.auth.user.avatar}
                                     alt="User avatar"
                                 />
                                 
@@ -83,16 +83,14 @@ export default function EditProfileForm({ setEditMode, ...props }) {
 
                             <input 
                                 type="file" 
-                                // id="user-avatar" 
                                 name="avatar"
-                                // value={data.avatar}
-                                // autoComplete="avatar"
                                 onChange={selectImageHandler}
                             />
 
                             <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                                 <div className="sm:hidden 2xl:block mt-6 min-w-0 flex-1">
                                     {/* <h1 className="text-2xl font-bold text-gray-900 truncate"> */}
+                                        <label htmlFor="first_name" className="text-sm font-medium text-gray-500">First name</label>
                                         <input 
                                             type="text" 
                                             id="first_name" 
@@ -103,6 +101,7 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                                             placeholder={props.auth.user.first_name}/>
                                     {/* </h1> */}
                                     {/* <h1 className="text-2xl font-bold text-gray-900 truncate"> */}
+                                        <label htmlFor="last_name" className="text-sm font-medium text-gray-500">Last name</label>
                                         <input 
                                             type="text" 
                                             id="last_name" 
@@ -144,6 +143,36 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                                     autoComplete="job_role"
                                     onChange={onHandleChange}
                                     placeholder={props.auth.user.job_role}
+                                    className="py-3 px-4 block w-full pl-20 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="sm:col-span-1">
+                                <label htmlFor="manager" className="text-sm font-medium text-gray-500">Manager</label>
+                                <input 
+                                    type="text"
+                                    id="manager" 
+                                    name="manager"
+                                    value={data.manager}
+                                    autoComplete="manager"
+                                    onChange={onHandleChange}
+                                    placeholder={props.auth.user.manager}
+                                    className="py-3 px-4 block w-full pl-20 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="sm:col-span-1">
+                                <label htmlFor="start_date" className="text-sm font-medium text-gray-500">Start date</label>
+                                <input 
+                                    type="date"
+                                    id="start_date" 
+                                    name="start_date"
+                                    value={data.start_date}
+                                    autoComplete="start_date"
+                                    onChange={onHandleChange}
+                                    placeholder={props.auth.user.start_date}
                                     className="py-3 px-4 block w-full pl-20 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                                 />
                             </div>
@@ -227,7 +256,7 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                             <div className="sm:col-span-1">
                             <label htmlFor="date_of_birth" className="text-sm font-medium text-gray-500">Birthday</label>
                                 <input 
-                                    type="text" 
+                                    type="date" 
                                     id="date_of_birth" 
                                     name="date_of_birth"
                                     value={data.date_of_birth}

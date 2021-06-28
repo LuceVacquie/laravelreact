@@ -72,5 +72,7 @@ Route::get('/announcement', [AnnouncementController::class, 'create'])
 Route::post('/announcement', [AnnouncementController::class, 'store'])
                 ->middleware('auth');
 
+Route::get('/announcement', [AnnouncementController::class, 'index']);
+
 Route::post('/edit-profile', [ProfileController::class, 'update'])
                 ->middleware('auth');
