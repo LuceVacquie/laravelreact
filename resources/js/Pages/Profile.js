@@ -77,7 +77,7 @@ export default function Profile( props ) {
                                                 <div className="flex">
                                                 <img
                                                     className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                                                    src={"/profile-avatars/" + props.auth.user.avatar}
+                                                    src={props.auth.user.avatar}
                                                     alt="User avatar"
                                                 />
                                                 </div>

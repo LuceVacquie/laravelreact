@@ -28,12 +28,12 @@ class ProfileController extends Controller
 
         if($image) {
             if($user->avatar) {
-                Storage::delete('public/profile-avatars/'.$user->avatar);
+                Storage::delete($user->avatar);
             }
 
             $image_new_name = date('dmy_H_s_i').'_'.$user->id.'_'.$image->getClientOriginalName();
-            $image->storeAs('profile-avatars', $image_new_name, 'public');
-            $user->avatar = 'storage/profile-avatars/'.$image_new_name;
+            $image->storeAs('public/profile-avatars', $image_new_name);
+            $user->avatar = Storage::url('public/profile-avatars/'.$image_new_name);
         }
 
         $user->save();

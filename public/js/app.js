@@ -23776,7 +23776,7 @@ function Profile(props) {
                             className: "flex",
                             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
                               className: "h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32",
-                              src: "/profile-avatars/" + props.auth.user.avatar,
+                              src: props.auth.user.avatar,
                               alt: "User avatar"
                             })
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
