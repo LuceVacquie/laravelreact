@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -19,7 +20,6 @@ class ProfileController extends Controller
         foreach (self::FIELDS as $field) {
             if($request -> $field) {
                 $user->$field = $request->$field;
-                $user->save();
             }
         }
 
@@ -27,16 +27,16 @@ class ProfileController extends Controller
         $image = $request->file('avatar');
 
         if($image) {
-            if($user -> avatar) {
+            if($user->avatar) {
                 Storage::delete('public/profile-avatars/'.$user->avatar);
             }
 
             $image_new_name = date('dmy_H_s_i').'_'.$user->id.'_'.$image->getClientOriginalName();
             $image->storeAs('profile-avatars', $image_new_name, 'public');
-            $user->avatar_url = 'storage/profile-avatars'.$image_new_name;
-            $user->avatar = $image_new_name;
-            $user->save();
+            $user->avatar = 'storage/profile-avatars/'.$image_new_name;
         }
+
+        $user->save();
 
         return redirect(route('profile'));
     }

@@ -22409,33 +22409,35 @@ function classNames() {
     classes[_key] = arguments[_key];
   }
 
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 function EditProfileForm(_ref) {
   var setEditMode = _ref.setEditMode,
       props = _objectWithoutProperties(_ref, _excluded);
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       selectedImage = _useState2[0],
       setSelectedImage = _useState2[1];
 
   var _useForm = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.useForm)({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    street_address: '',
-    postcode: '',
-    city: '',
-    date_of_birth: '',
-    avatar: '',
-    banner: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    street_address: "",
+    postcode: "",
+    city: "",
+    date_of_birth: "",
+    avatar: "",
+    banner: ""
   }),
       data = _useForm.data,
       setData = _useForm.setData,
       post = _useForm.post;
+
+  console.log(props.auth);
 
   var onHandleChange = function onHandleChange(_ref2) {
     var target = _ref2.target;
@@ -22446,14 +22448,13 @@ function EditProfileForm(_ref) {
 
   var selectImageHandler = function selectImageHandler(_ref3) {
     var target = _ref3.target;
-    setSelectedImage(target.files[0]);
-    console.log(target.files[0]);
+    setData("avatar", target.files[0]);
   };
 
   var submit = function submit(e) {
     e.preventDefault();
     setEditMode(false);
-    post(route('edit-profile'));
+    post(route("edit-profile"));
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
@@ -22494,7 +22495,7 @@ function EditProfileForm(_ref) {
                 alt: "User avatar"
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-              type: "file" // id="user-avatar" 
+              type: "file" // id="user-avatar"
               ,
               name: "avatar" // value={data.avatar}
               // autoComplete="avatar"
