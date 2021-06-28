@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import Input from '../Components/Input';
-import { useForm } from '@inertiajs/inertia-react';
+import { useForm, usePage } from '@inertiajs/inertia-react';
 import {
   ChatAltIcon,
   PlusIcon,
@@ -71,13 +71,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Announcements(props) {
-    const [listAnnouncements, setListAnnouncements] = useState({
-        announcements: [],
-        loading: true,
-    });
+const Announcements = (props) => {
+
+    const { announcements } = usePage().props;
 
     const [isAddAnnouncementActive, setIsAddAnnouncementActive] = useState(false)
+
+    console.log(props.announcements)
 
     const { data, setData, post } = useForm({
         title: '',
@@ -93,25 +93,9 @@ export default function Announcements(props) {
 
     const submit = (e) => {
         e.preventDefault();
-        setListAnnouncements(prev => [data, ...prev]);
-        setData({});
         setIsAddAnnouncementActive(!isAddAnnouncementActive);
         post(route('announcement'));
     };
-
-    const getAnnouncements = async () => {
-        const dataAnnouncement = await axios.get('http://127.0.0.1:8000/api/announcement')
-        if(dataAnnouncement.data.status === 200){
-            setListAnnouncements({
-                announcements: resizeBy.data.announcements,
-                loading: false,
-            })
-        }
-        console.log(dataAnnouncement.data)
-    }
-    
-    getAnnouncements()
-    console.log(listAnnouncements)
 
   return (
     <Authenticated
@@ -266,7 +250,7 @@ export default function Announcements(props) {
                                         <ul className="space-y-4">
                                             
                                             {announcements.map((announcement) => (
-                                            <li key={announcement.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                                            <li key={id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
                                                 {/* <article aria-labelledby={'announcement-title-' + announcement.id}> */}
                                                 <article aria-labelledby={announcement.id}>
                                                 <div>
@@ -275,21 +259,20 @@ export default function Announcements(props) {
                                                             {/* <img className="h-10 w-10 rounded-full" src={announcement.author.imageUrl} alt="" /> */}
                                                         </div>
                                                         <div className="min-w-0 flex-1">
-                                                            {/* <p className="text-sm font-medium text-gray-900">
-                                                                <a href={announcement.author.href} className="hover:underline">
-                                                                    {announcement.author.name}
-                                                                </a>
+                                                            <p className="text-sm font-medium text-gray-900">
+                                                                {announcement.created_by}
                                                             </p>
                                                             <p className="text-sm text-gray-500">
-                                                                <a href={announcement.href} className="hover:underline">
-                                                                    <time dateTime={announcement.datetime}>{announcement.date}</time>
-                                                                </a>
-                                                            </p> */}
+                                                                    <time dateTime={announcement.created_at}>{announcement.created_at}</time>
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <h2 id={'announcement-title-' + announcement.id} className="mt-4 text-base font-medium text-gray-900">
+                                                    <h2 className="mt-4 text-base font-medium text-gray-900">
                                                     {announcement.title}
                                                     </h2>
+                                                    <h3 className="mt-4 text-base font-medium text-gray-900">
+                                                    {announcement.category}
+                                                    </h3>
                                                 </div>
                                                 <div
                                                     className="mt-2 text-sm text-gray-700 space-y-4"
@@ -426,3 +409,6 @@ export default function Announcements(props) {
     </Authenticated>
   )
 }
+
+
+export default Announcements;

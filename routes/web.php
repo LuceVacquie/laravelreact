@@ -75,6 +75,8 @@ Route::get('/other-user-profile', function () {
     return Inertia::render('OtherUserProfile');
 })->middleware(['auth', 'verified'])->name('other-user-profile');
 
+Route::get('announcement')->name('announcement')->uses('AnnouncementController@index')->middleware(['auth', 'verified']);
+
 require __DIR__.'/auth.php';
 
 

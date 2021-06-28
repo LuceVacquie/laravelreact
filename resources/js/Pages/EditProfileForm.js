@@ -32,6 +32,7 @@ export default function EditProfileForm({ setEditMode, ...props }) {
     const selectImageHandler = ({target}) => {
         setData('avatar', target.files[0]);
         setData('banner', target.files[0]);
+        console.log(target.files)
     }
 
     const submit = (e) => {
@@ -40,7 +41,6 @@ export default function EditProfileForm({ setEditMode, ...props }) {
         post(route('edit-profile'));
     };
 
-    console.log(props.auth)
 
     return (
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">

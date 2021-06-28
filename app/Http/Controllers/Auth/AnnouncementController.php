@@ -12,13 +12,7 @@ class AnnouncementController extends Controller
   
     public function index()
     {
-        $announcement = Announcement::all();
-        return response()->json([
-            'status'=> 200,
-            'announcement'=>$announcement
-
-        ]);
-
+        return Inertia::render('Auth/Announcement',Announcement::all());
     }
 
     public function create()
