@@ -18,7 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/announcement', function (Request $request) {
-    return $request->announcement();
-});
+Route::middleware('auth:api')->get('/announcement', function () {
+    return \App\Models\Announcement::all();
+})->name('announcement');
 
+//Example
+// Route::middleware(['auth:sanctum', 'verified'])->get('/testing', function () {
+//     return \App\Models\Organisation::all();
+// })->name('testing');

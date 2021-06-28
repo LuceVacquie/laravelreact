@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\AnnouncementController;
+use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
@@ -69,4 +70,7 @@ Route::get('/announcement', [AnnouncementController::class, 'create'])
                 ->name('announcement');
 
 Route::post('/announcement', [AnnouncementController::class, 'store'])
+                ->middleware('auth');
+
+Route::post('/edit-profile', [ProfileController::class, 'update'])
                 ->middleware('auth');

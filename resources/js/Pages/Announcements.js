@@ -21,7 +21,7 @@ const tabs = [
   { name: 'Most Liked', href: '#', current: false },
   { name: 'Most Answers', href: '#', current: false },
 ]
-const questions = [
+const announcements = [
   {
     id: '81614',
     likes: '29',
@@ -40,7 +40,7 @@ const questions = [
     body:
       '\n          <p>\n            Jurassic Park was an incredible idea and a magnificent feat of engineering, but poor protocols and a disregard for human safety killed what could have otherwise been one of the best businesses of our generation.\n          </p>\n          <p>\n            Ultimately, I think that if you wanted to run the park successfully and keep visitors safe, the most important thing to prioritize would be&hellip;\n          </p>\n        ',
   },
-  // More questions...
+  // More announcements...
 ]
 const whoToFollow = [
   {
@@ -77,20 +77,21 @@ export default function Announcements(props) {
         title: '',
         category: '',
         description: '',
+        created_by: props.auth.user.first_name,
     });
 
     const onHandleChange = ({target}) => {
         const {name, value} = target
-        setData({name: value});
+        setData(name, value);
     };
-    console.log('hello')
+
     const submit = (e) => {
         e.preventDefault();
-
+        setIsAddAnnouncementActive(!isAddAnnouncementActive);
         post(route('announcement'));
-
-        console.log('hello')
     };
+
+    //fetch data 
 
     console.log(props.auth.announcement)
 
@@ -139,11 +140,11 @@ export default function Announcements(props) {
                                         {/* Announcement button filters */}
                                         <div className="px-4 sm:px-0">
                                             <div className="sm:hidden">
-                                                <label htmlFor="question-tabs" className="sr-only">
+                                                <label htmlFor="announcement-tabs" className="sr-only">
                                                 Select a tab
                                                 </label>
                                                 <select
-                                                id="question-tabs"
+                                                id="announcement-tabs"
                                                 className="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500"
                                                 defaultValue={tabs.find((tab) => tab.current).name}
                                                 >
@@ -195,7 +196,7 @@ export default function Announcements(props) {
                                                         <Input 
                                                             type="text" 
                                                             id="title-announcement" 
-                                                            name="title-announcement"
+                                                            name="title"
                                                             value={data.title}
                                                             placeholder="Title"
                                                             autoComplete="title"
@@ -207,7 +208,7 @@ export default function Announcements(props) {
                                                         <Input 
                                                             type="text" 
                                                             id="category-announcement" 
-                                                            name="category-announcement"
+                                                            name="category"
                                                             value={data.category}
                                                             placeholder="Category"
                                                             autoComplete="category"
@@ -219,7 +220,7 @@ export default function Announcements(props) {
                                                         <Input 
                                                             type="text" 
                                                             id="description-announcement" 
-                                                            name="description-announcement" 
+                                                            name="description" 
                                                             value={data.description}
                                                             placeholder="Write your announcement here..."
                                                             autoComplete="description"
@@ -246,48 +247,48 @@ export default function Announcements(props) {
                                         <h1 className="sr-only">Announcements</h1>
                                         <ul className="space-y-4">
                                             
-                                            {questions.map((question) => (
-                                            <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
-                                                <article aria-labelledby={'question-title-' + question.id}>
+                                            {announcements.map((announcement) => (
+                                            <li key={announcement.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                                                <article aria-labelledby={'announcement-title-' + announcement.id}>
                                                 <div>
                                                     <div className="flex space-x-3">
                                                         <div className="flex-shrink-0">
-                                                            <img className="h-10 w-10 rounded-full" src={question.author.imageUrl} alt="" />
+                                                            <img className="h-10 w-10 rounded-full" src={announcement.author.imageUrl} alt="" />
                                                         </div>
                                                         <div className="min-w-0 flex-1">
                                                             <p className="text-sm font-medium text-gray-900">
-                                                                <a href={question.author.href} className="hover:underline">
-                                                                    {question.author.name}
+                                                                <a href={announcement.author.href} className="hover:underline">
+                                                                    {announcement.author.name}
                                                                 </a>
                                                             </p>
                                                             <p className="text-sm text-gray-500">
-                                                                <a href={question.href} className="hover:underline">
-                                                                    <time dateTime={question.datetime}>{question.date}</time>
+                                                                <a href={announcement.href} className="hover:underline">
+                                                                    <time dateTime={announcement.datetime}>{announcement.date}</time>
                                                                 </a>
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
-                                                    {question.title}
+                                                    <h2 id={'announcement-title-' + announcement.id} className="mt-4 text-base font-medium text-gray-900">
+                                                    {announcement.title}
                                                     </h2>
                                                 </div>
                                                 <div
                                                     className="mt-2 text-sm text-gray-700 space-y-4"
-                                                    dangerouslySetInnerHTML={{ __html: question.body }}
+                                                    dangerouslySetInnerHTML={{ __html: announcement.body }}
                                                 />
                                                 <div className="mt-6 flex justify-between space-x-8">
                                                     <div className="flex space-x-6">
                                                     <span className="inline-flex items-center text-sm">
                                                         <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                                         <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">{question.likes}</span>
+                                                        <span className="font-medium text-gray-900">{announcement.likes}</span>
                                                         <span className="sr-only">likes</span>
                                                         </button>
                                                     </span>
                                                     <span className="inline-flex items-center text-sm">
                                                         <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                                         <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                                                        <span className="font-medium text-gray-900">{question.replies}</span>
+                                                        <span className="font-medium text-gray-900">{announcement.replies}</span>
                                                         <span className="sr-only">replies</span>
                                                         </button>
                                                     </span>

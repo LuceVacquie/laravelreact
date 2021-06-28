@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AnnouncementController;
+use App\Http\Controllers\Auth\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,10 @@ Route::get('/team', function () {
 Route::get('/profile', function () {
     return Inertia::render('Profile');
 })->middleware(['auth', 'verified'])->name('profile');
+
+Route::get('/edit-profile', function () {
+    return Inertia::render('EditProfileForm');
+})->middleware(['auth', 'verified'])->name('edit-profile');
 
 Route::get('/one-to-one-form', function () {
     return Inertia::render('OneToOneForm');

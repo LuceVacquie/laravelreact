@@ -70,14 +70,14 @@ export default function Profile( props ) {
                                         {/* Profile header */}
                                         <div>
                                             <div>
-                                            <img className="h-32 w-full object-cover lg:h-48" src={"/images/" + props.auth.user.banner} alt="User banner" />
+                                            <img className="h-32 w-full object-cover lg:h-48" src={"/profile-banners/" + props.auth.user.banner} alt="User banner" />
                                             </div>
                                             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                                             <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                                                 <div className="flex">
                                                 <img
                                                     className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                                                    src={"/images/" + props.auth.user.avatar}
+                                                    src={"/profile-avatars/" + props.auth.user.avatar}
                                                     alt="User avatar"
                                                 />
                                                 </div>
@@ -126,7 +126,7 @@ export default function Profile( props ) {
                                                         <div>
                                                             <div className="sm:col-span-1">
                                                                 <dt className="text-sm font-medium text-gray-500">Address</dt>
-                                                                <dd className="mt-1 text-sm text-gray-900">{props.auth.user.street_address}, {props.auth.user.postcode} {props.auth.user.city}</dd>
+                                                                <dd className="mt-1 text-sm text-gray-900">{props.auth.user.street_address} {props.auth.user.postcode} {props.auth.user.city}</dd>
                                                             </div>
                                                         </div>
                                                         <div>
@@ -143,7 +143,7 @@ export default function Profile( props ) {
                                     :
 
                                     //Edit mode = true
-                                        <EditProfileForm toggleEditMode={toggleEditMode} auth={props.auth}/>
+                                        <EditProfileForm setEditMode={setEditMode} auth={props.auth}/>
                                     }
 
                                 </div>
