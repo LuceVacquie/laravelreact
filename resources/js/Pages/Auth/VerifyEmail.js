@@ -33,7 +33,7 @@ export default function VerifyEmail({ status }) {
                     <InertiaLink
                         href={route('logout')}
                         method="post"
-                        as="button"
+                        as="a"
                         className="underline text-sm text-gray-600 hover:text-gray-900"
                     >
                         Log Out

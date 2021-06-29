@@ -1,10 +1,11 @@
 import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function NavLink({ href, active, children }) {
+export default function NavLink({ href, active, children, as = 'a'}) {
     return (
         <InertiaLink
             href={href}
+            as={as}
             className={
                 active
                     ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-400 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'

@@ -48,7 +48,7 @@ const ManagerList = (props) => {
                     <div className="flow-root mt-6">
                         <ul className="-my-5 divide-y divide-gray-200">
                             {managers.map((manager) => (
-                            <li key={manager.handle} className="py-4">
+                            <li key={manager.name} className="py-4">
                                 <div className="flex items-center space-x-4">
                                     <div className="flex-shrink-0">
                                         <img className="h-8 w-8 rounded-full" src={manager.imageUrl} alt="" />

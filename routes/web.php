@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\TimeOffController;
 use App\Http\Controllers\Auth\ProfileController;
 
 /*
@@ -59,10 +60,6 @@ Route::get('/one-to-one-form', function () {
     return Inertia::render('OneToOneForm');
 })->middleware(['auth', 'verified'])->name('one-to-one-form');
 
-Route::get('/holidays-form', function () {
-    return Inertia::render('HolidaysForm');
-})->middleware(['auth', 'verified'])->name('holidays-form');
-
 Route::get('/payrolls', function () {
     return Inertia::render('Payrolls');
 })->middleware(['auth', 'verified'])->name('payrolls');
@@ -79,6 +76,11 @@ Route::post('/announcements', [AnnouncementController::class, 'store'])->middlew
 
 Route::get('/announcements', [AnnouncementController::class, 'index'])->middleware(['auth', 'verified'])->name('announcements');
 
+
+//Time off
+Route::post('/holidays-form', [TimeOffController::class, 'store'])->middleware(['auth', 'verified'])->name('holidays-form');
+
+Route::get('/holidays-form', [TimeOffController::class, 'index'])->middleware(['auth', 'verified'])->name('holidays-form');
 
 require __DIR__.'/auth.php';
 
