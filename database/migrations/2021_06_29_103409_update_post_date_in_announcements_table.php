@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLastNameColumnsToUsersTable extends Migration
+class UpdatePostDateInAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddLastNameColumnsToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('last_name')->after('first_name');
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->renameColumn('post_date', 'created_at')->format('dd/mm/Y');
         });
     }
 
@@ -25,8 +25,8 @@ class AddLastNameColumnsToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('last_name');
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->renameColumn('created_at', 'post_date');
         });
     }
 }

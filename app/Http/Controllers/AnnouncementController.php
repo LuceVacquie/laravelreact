@@ -21,14 +21,16 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-            'created_by' => 'required|string|max:255',
+            'author' => 'string|max:255',
+            'author_avatar' => 'string|max:1000',
         ]);
 
         $announcement = Announcement::create([
             'title' => $request->title,
             'category' => $request->category,
             'description' => $request->description,
-            'created_by' => $request->created_by,
+            'author' => $request->author,
+            'author_avatar' => $request->author_avatar,
         ]);
 
         return redirect(route('announcements'));

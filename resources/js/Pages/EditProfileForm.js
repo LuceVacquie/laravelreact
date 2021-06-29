@@ -9,8 +9,7 @@ function classNames(...classes) {
 export default function EditProfileForm({ setEditMode, ...props }) {
 
     const { data, setData, post } = useForm({
-        first_name: '',
-        last_name: '',
+        name: '',
         job_role:'',
         manager: '',
         start_date: '',
@@ -30,9 +29,8 @@ export default function EditProfileForm({ setEditMode, ...props }) {
     };
 
     const selectImageHandler = ({target}) => {
-        setData('avatar', target.files[0]);
-        setData('banner', target.files[0]);
-        console.log(target.files)
+        const {name} = target
+        setData(name, target.files[0]);
     }
 
     const submit = (e) => {
@@ -61,14 +59,18 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                             src={props.auth.user.banner} 
                             alt="User banner" 
                         />
+                        <div className="w-full">
+                            <input 
+                                type="file" 
+                                name="banner"
+                                onChange={selectImageHandler}
+                                className=""
+                            />
+                        </div>
                         
                     </div>
 
-                    <input 
-                        type="file" 
-                        name="banner"
-                        onChange={selectImageHandler}
-                    />
+                    
                   
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
@@ -89,28 +91,16 @@ export default function EditProfileForm({ setEditMode, ...props }) {
 
                             <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                                 <div className="sm:hidden 2xl:block mt-6 min-w-0 flex-1">
-                                    {/* <h1 className="text-2xl font-bold text-gray-900 truncate"> */}
-                                        <label htmlFor="first_name" className="text-sm font-medium text-gray-500">First name</label>
+                                    <h1 className="text-2xl font-bold text-gray-900 truncate">
+                                        <label htmlFor="last_name" className="text-sm font-medium text-gray-500">Name</label>
                                         <input 
                                             type="text" 
-                                            id="first_name" 
-                                            name="first_name"
-                                            value={data.first_name}
-                                            autoComplete="first_name"
+                                            name="name"
+                                            value={data.name}
+                                            autoComplete="name"
                                             onChange={onHandleChange}
-                                            placeholder={props.auth.user.first_name}/>
-                                    {/* </h1> */}
-                                    {/* <h1 className="text-2xl font-bold text-gray-900 truncate"> */}
-                                        <label htmlFor="last_name" className="text-sm font-medium text-gray-500">Last name</label>
-                                        <input 
-                                            type="text" 
-                                            id="last_name" 
-                                            name="last_name"
-                                            value={data.last_name}
-                                            autoComplete="last_name"
-                                            onChange={onHandleChange}
-                                            placeholder={props.auth.user.last_name}/>
-                                    {/* </h1> */}
+                                            placeholder={props.auth.user.name}/>
+                                    </h1>
                                 </div>
                                 <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                                     <button
@@ -124,7 +114,7 @@ export default function EditProfileForm({ setEditMode, ...props }) {
                             </div>
                         </div>
                         <div className="hidden sm:block 2xl:hidden mt-6 min-w-0 flex-1">
-                            <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.first_name} {props.auth.user.last_name}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.name}</h1>
                         </div>
                     </div>
                 </div>

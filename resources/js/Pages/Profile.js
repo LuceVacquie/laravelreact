@@ -86,7 +86,7 @@ export default function Profile( props ) {
                                                             </div>
                                                             <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                                                                 <div className="sm:hidden 2xl:block mt-6 min-w-0 flex-1">
-                                                                    <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.first_name} {props.auth.user.last_name}</h1>
+                                                                    <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.name}</h1>
                                                                 </div>
                                                                 <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                                                                     <button
@@ -100,7 +100,7 @@ export default function Profile( props ) {
                                                             </div>
                                                         </div>
                                                         <div className="hidden sm:block 2xl:hidden mt-6 min-w-0 flex-1">
-                                                            <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.first_name} {props.auth.user.last_name}</h1>
+                                                            <h1 className="text-2xl font-bold text-gray-900 truncate">{props.auth.user.name}</h1>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -21,25 +21,7 @@ const tabs = [
     { name: "Most Liked", href: "#", current: false },
     { name: "Most Answers", href: "#", current: false },
 ];
-const announcements = [
-    {
-        id: "81614",
-        likes: "29",
-        replies: "11",
-        views: "2.7k",
-        author: {
-            name: "Dries Vincent",
-            imageUrl:
-                "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-            href: "#",
-        },
-        date: "December 9 at 11:43 AM",
-        datetime: "2020-12-09T11:43:00",
-        href: "#",
-        title: "What would you have done differently if you ran Jurassic Park?",
-        body: "\n          <p>\n            Jurassic Park was an incredible idea and a magnificent feat of engineering, but poor protocols and a disregard for human safety killed what could have otherwise been one of the best businesses of our generation.\n          </p>\n          <p>\n            Ultimately, I think that if you wanted to run the park successfully and keep visitors safe, the most important thing to prioritize would be&hellip;\n          </p>\n        ",
-    },
-];
+
 const whoToFollow = [
     {
         name: "Leonard Krasner",
@@ -69,7 +51,6 @@ function classNames(...classes) {
 }
 
 const Announcements = (props) => {
-    console.log(props.data);
 
     const [isAddAnnouncementActive, setIsAddAnnouncementActive] =
         useState(false);
@@ -78,8 +59,16 @@ const Announcements = (props) => {
         title: "",
         category: "",
         description: "",
-        created_by: props.auth.user.first_name,
+        author: props.auth.user.name,
+        author_avatar: props.auth.user.avatar,
     });
+
+    const announcements = props.data;
+
+    var sorted_announcements = announcements.sort((a,b) => {
+        return new Date(a.created_at).getTime() - 
+            new Date(b.created_at).getTime()
+    }).reverse();
 
     const onHandleChange = ({ target }) => {
         const { name, value } = target;
@@ -322,7 +311,7 @@ const Announcements = (props) => {
                                                     Announcements
                                                 </h1>
                                                 <ul className="space-y-4">
-                                                    {props.data.map(
+                                                    {sorted_announcements.map(
                                                         (announcement) => (
                                                             <li
                                                                 key={
@@ -339,20 +328,16 @@ const Announcements = (props) => {
                                                                     <div>
                                                                         <div className="flex space-x-3">
                                                                             <div className="flex-shrink-0">
-                                                                                {/* <img
+                                                                                <img
                                                                                     className="h-10 w-10 rounded-full"
-                                                                                    src={
-                                                                                        announcement
-                                                                                            .author
-                                                                                            .imageUrl
-                                                                                    }
-                                                                                    alt="" */}
-                                                                                {/* /> */}
+                                                                                    src={announcement.author_avatar}
+                                                                                    alt="User avatar"
+                                                                                />
                                                                             </div>
                                                                             <div className="min-w-0 flex-1">
                                                                                 <p className="text-sm font-medium text-gray-900">
                                                                                     {
-                                                                                        announcement.created_by
+                                                                                        announcement.author
                                                                                     }
                                                                                 </p>
                                                                                 <p className="text-sm text-gray-500">

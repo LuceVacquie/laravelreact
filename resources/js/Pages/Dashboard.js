@@ -108,6 +108,7 @@ function classNames(...classes) {
 
 export default function Dashboard(props) {
 
+    console.log(props)
 
     return (
         <Authenticated
@@ -185,7 +186,7 @@ export default function Dashboard(props) {
                                                     <img className="h-10 w-10 rounded-full" src={props.auth.user.avatar} alt="User avatar" />
                                                 </div>
                                                 <div className="ml-3 min-w-0 flex-1">
-                                                    <div className="text-base font-medium text-gray-800 truncate">{props.auth.user.first_name} {props.auth.user.last_name}</div>
+                                                    <div className="text-base font-medium text-gray-800 truncate">{props.auth.user.name}</div>
                                                     <div className="text-sm font-medium text-gray-500 truncate">{props.auth.user.email}</div>
                                                 </div>
                                                 <button className="ml-auto flex-shrink-0 bg-white p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
@@ -233,7 +234,7 @@ export default function Dashboard(props) {
                                                 </div>
                                                 <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                                 <p className="text-sm font-medium text-gray-600">Welcome back,</p>
-                                                <p className="text-xl font-bold text-gray-900 sm:text-2xl">{props.auth.user.first_name} {props.auth.user.last_name}</p>
+                                                <p className="text-xl font-bold text-gray-900 sm:text-2xl">{props.auth.user.name}</p>
                                                 <p className="text-sm font-medium text-gray-600">{props.auth.user.job_role}</p>
                                                 </div>
                                             </div>

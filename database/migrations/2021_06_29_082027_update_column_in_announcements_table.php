@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateNameInUsersTable extends Migration
+class UpdateColumnInAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateNameInUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('name', 'first_name');
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->renameColumn('created_by', 'author');
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateNameInUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('first_name', 'name');
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->renameColumn('author', 'created_by');
         });
     }
 }

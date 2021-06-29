@@ -13,7 +13,7 @@ class Announcement extends Model
         'title',
         'category',
         'description',
-        'created_by',
-        'created_at',
+        'author',
+        'author_avatar',
     ];
 }
