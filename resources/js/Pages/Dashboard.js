@@ -1,6 +1,6 @@
 import Authenticated from '@/Layouts/Authenticated';
 import ManagerList from '../Components/ManagerList.js';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   AcademicCapIcon,
   BadgeCheckIcon,
@@ -9,6 +9,7 @@ import {
   ReceiptRefundIcon,
   UsersIcon,
 } from '@heroicons/react/outline';
+import { Inertia } from '@inertiajs/inertia';
 
 
   const stats = [
@@ -92,7 +93,41 @@ function classNames(...classes) {
 
 export default function Dashboard(props) {
 
-    console.log(props)
+    const [dataUsers, setDataUsers] = useState([])
+
+    // async function getUsersData (){
+    //     const response = await fetch('dashboard/users')
+    //     const data = await response.json()
+    //     return data;
+    // }
+
+    useEffect(() => {
+        async function getUsersData (){
+            let response = await fetch('dashboard/users')
+            response = await response.json()
+            setDataUsers(response);
+        }
+        getUsersData()
+    }, [])
+    console.log(dataUsers)
+
+    // useEffect(() => {
+    //     async function fetchMyAPI() {
+    //       let response = await fetch('api/data')
+    //       response = await response.json()
+    //       dataSet(response)
+    //     }
+    
+    //     fetchMyAPI()
+    //   }, [])
+
+    // let dataManagers = [];
+    // async function getManagersData (){
+    //     const response = await fetch('dashboard/managers')
+    //     return response.json()
+    // }
+    // dataManagers = getManagersData()
+    // console.log(dataManagers)
 
     return (
         <Authenticated
@@ -137,9 +172,23 @@ export default function Dashboard(props) {
                                                 >
                                                 View Profile
                                                 </a>
+                                                <a
+                                                href={route('dashboard/users')} 
+                                                active={route().current('dashboard/users')}
+                                                className="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                                                >
+                                                Users
+                                                </a>
                                             </div>
                                             </div>
                                         </div>
+
+                                        <div className="mt-5 flex justify-center sm:mt-0 bg-reach-red">
+                                            {dataUsers.map((user) => (
+                                                <div key={user.id}>{user.attributes.name}</div>
+                                            ))}
+                                        </div>
+
                                         <div className="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                                             {stats.map((stat) => (
                                             <div key={stat.label} className="px-6 py-5 text-sm font-medium text-center">

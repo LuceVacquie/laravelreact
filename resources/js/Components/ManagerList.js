@@ -36,8 +36,6 @@ const ManagerList = (props) => {
     const [manager, setManager] = useState({})
     const [managersList, setManagersList] = useState([])
 
-    
-
     return(
         <section aria-labelledby="recent-hires-title">
             <div className="rounded-lg bg-white overflow-hidden shadow">

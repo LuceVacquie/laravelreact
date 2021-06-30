@@ -68,8 +68,9 @@ Route::get('/other-user-profile', function () {
     return Inertia::render('OtherUserProfile');
 })->middleware(['auth', 'verified'])->name('other-user-profile');
 
-
-
+//Get users data
+Route::get('/dashboard/managers', [ProfileController::class, 'managersList'])->middleware(['auth', 'verified'])->name('dashboard/managers');
+Route::get('/dashboard/users', [ProfileController::class, 'usersList'])->middleware(['auth', 'verified'])->name('dashboard/users');
 
 // Announcements
 Route::post('/announcements', [AnnouncementController::class, 'store'])->middleware(['auth', 'verified'])->name('announcements');

@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
  
+    public function managersList()
+    {
+        return User::where('id', '!=', auth()->id())->where('admin', 1)
+        ->get();
+    }
+
+    public function usersList()
+    {
+        return User::get();
+    }
+    
     const FIELDS = ['phone', 'job_role', 'manager', 'start_date', 'street_address', 'postcode', 'city', 'date_of_birth'];
 
     public function update(Request $request)
