@@ -15,6 +15,11 @@ class AnnouncementController extends Controller
         return Inertia::render('Announcements', ['data' => Announcement::all()]);
     }
 
+    public function announcementsList()
+    {
+        return Announcement::all();
+    }
+
     public function store(Request $request)
     {
         $request->validate([

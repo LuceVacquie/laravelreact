@@ -1,40 +1,6 @@
-import React, {useState} from 'react';
-import AndrewAvatar from '../../../public/assets/team_andrew.jpg';
-import TomAvatar from '../../../public/assets/team_thomas.jpg';
-import JonathanAvatar from '../../../public/assets/team_jonathan.jpg';
-import KarlAvatar from '../../../public/assets/team_karl.jpg';
+import React from 'react';
 
-const managers = [
-    {
-      name: 'Andrew Claypole',
-      job_role: 'andrewclaypole',
-      imageUrl: AndrewAvatar,
-      href: '#',
-    },
-    {
-      name: 'Jonathan Ward',
-      job_role: 'jonathanward',
-      imageUrl: JonathanAvatar,
-      href: '#',
-    },
-    {
-      name: 'Tom King',
-      job_role: 'tomking',
-      imageUrl: TomAvatar,
-      href: '#',
-    },
-    {
-      name: 'Karl Nuttall',
-      job_role: 'karlnuttall',
-      imageUrl: KarlAvatar,
-      href: '#',
-    },
-  ]
-
-const ManagerList = (props) => {
-
-    const [manager, setManager] = useState({})
-    const [managersList, setManagersList] = useState([])
+const ManagerList = ({dataManagers}) => {
 
     return(
         <section aria-labelledby="recent-hires-title">
@@ -45,15 +11,15 @@ const ManagerList = (props) => {
                     </h2>
                     <div className="flow-root mt-6">
                         <ul className="-my-5 divide-y divide-gray-200">
-                            {managers.map((manager) => (
+                            {dataManagers.map((manager) => (
                             <li key={manager.name} className="py-4">
                                 <div className="flex items-center space-x-4">
                                     <div className="flex-shrink-0">
-                                        <img className="h-8 w-8 rounded-full" src={manager.imageUrl} alt="" />
+                                        <img className="h-8 w-8 rounded-full" src={manager.avatar} alt={manager.name} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium text-gray-900 truncate">{manager.name}</p>
-                                        <p className="text-sm text-gray-500 truncate">{'@' + manager.handle}</p>
+                                        <p className="text-sm text-gray-500 truncate">{manager.email}</p>
                                     </div>
                                     <div>
                                         <a

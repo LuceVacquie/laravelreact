@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TimeOffController;
 use App\Http\Controllers\Auth\ProfileController;
 
@@ -68,20 +69,34 @@ Route::get('/other-user-profile', function () {
     return Inertia::render('OtherUserProfile');
 })->middleware(['auth', 'verified'])->name('other-user-profile');
 
+
 //Get users data
 Route::get('/dashboard/managers', [ProfileController::class, 'managersList'])->middleware(['auth', 'verified'])->name('dashboard/managers');
+
 Route::get('/dashboard/users', [ProfileController::class, 'usersList'])->middleware(['auth', 'verified'])->name('dashboard/users');
+
 
 // Announcements
 Route::post('/announcements', [AnnouncementController::class, 'store'])->middleware(['auth', 'verified'])->name('announcements');
 
 Route::get('/announcements', [AnnouncementController::class, 'index'])->middleware(['auth', 'verified'])->name('announcements');
 
+Route::get('/dashboard/announcements', [AnnouncementController::class, 'announcementsList'])->middleware(['auth', 'verified'])->name('dashboard/announcements');
+
 
 //Time off
 Route::post('/holidays-form', [TimeOffController::class, 'store'])->middleware(['auth', 'verified'])->name('holidays-form');
 
 Route::get('/holidays-form', [TimeOffController::class, 'index'])->middleware(['auth', 'verified'])->name('holidays-form');
+
+
+//Projects
+Route::post('/projects', [ProjectController::class, 'store'])->middleware(['auth', 'verified'])->name('projects');
+
+Route::get('/projects', [ProjectController::class, 'index'])->middleware(['auth', 'verified'])->name('projects');
+
+Route::get('/dashboard/projects', [ProjectController::class, 'projectsList'])->middleware(['auth', 'verified'])->name('dashboard/projects');
+
 
 require __DIR__.'/auth.php';
 

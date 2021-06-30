@@ -7,7 +7,7 @@ import ResponsiveNavLink from '../Components/ResponsiveNavLink';
 import { InertiaLink } from '@inertiajs/inertia-react';
 
 export default function Authenticated({ auth, header, children }) {
-    
+
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -55,7 +55,7 @@ export default function Authenticated({ auth, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
+                                        <Dropdown.Link href={route('logout')} method="post" as="a">
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>

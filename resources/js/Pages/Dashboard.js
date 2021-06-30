@@ -1,5 +1,6 @@
 import Authenticated from '@/Layouts/Authenticated';
-import ManagerList from '../Components/ManagerList.js';
+import ManagerList from '../Components/ManagerList';
+import AnnouncementsDashboard from '../Components/AnnouncementsDashboard';
 import React, {useState, useEffect} from 'react';
 import {
   AcademicCapIcon,
@@ -9,7 +10,6 @@ import {
   ReceiptRefundIcon,
   UsersIcon,
 } from '@heroicons/react/outline';
-import { Inertia } from '@inertiajs/inertia';
 
 
   const stats = [
@@ -38,8 +38,8 @@ import { Inertia } from '@inertiajs/inertia';
       name: 'Schedule a one-on-one',
       href: `${route('one-to-one-form')}`,
       active: `${route().current('one-to-one-form')}`,
-      iconForeground: 'text-light-blue-700',
-      iconBackground: 'bg-light-blue-50',
+      iconForeground: 'text-green-700',
+      iconBackground: 'bg-green-50',
     },
     { icon: CashIcon, 
         name: 'Payrolls', 
@@ -63,29 +63,7 @@ import { Inertia } from '@inertiajs/inertia';
       iconBackground: 'bg-indigo-50',
     },
   ]
-  
-  const announcements = [
-    {
-      id: 1,
-      title: 'EURO: England-Germany',
-      href: '#',
-      preview: 'Tuesday 29/06 - Let\s support our favourite team together at 5.00pm!'
-    },
-    {
-      id: 2,
-      title: 'New password policy',
-      href: '#',
-      preview:
-        'Alias inventore ut autem optio voluptas et repellendus. Facere totam quaerat quam quo laudantium cumque eaque excepturi vel. Accusamus maxime ipsam reprehenderit rerum id repellendus rerum. Culpa cum vel natus. Est sit autem mollitia.',
-    },
-    {
-      id: 3,
-      title: 'Office closed on July 2nd',
-      href: '#',
-      preview:
-        'Tenetur libero voluptatem rerum occaecati qui est molestiae exercitationem. Voluptate quisquam iure assumenda consequatur ex et recusandae. Alias consectetur voluptatibus. Accusamus a ab dicta et. Consequatur quis dignissimos voluptatem nisi.',
-    },
-  ]
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -124,6 +102,22 @@ export default function Dashboard(props) {
     useEffect(() => {
         const fetchData = async () => {
         setDataManagers(await getManagersData())
+        }
+        fetchData()
+    }, [])
+
+    //Get the managers (where admin = 1)
+    const [dataAnnouncements, setDataAnnouncements] = useState([])
+
+    async function getAnnouncementsData (){
+        const response = await fetch('dashboard/announcements')
+        const data = await response.json()
+        return data;
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+        setDataAnnouncements(await getAnnouncementsData())
         }
         fetchData()
     }, [])
@@ -173,21 +167,8 @@ export default function Dashboard(props) {
                                                 >
                                                 View Profile
                                                 </a>
-                                                <a
-                                                href={route('dashboard/users')} 
-                                                active={route().current('dashboard/users')}
-                                                className="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                                                >
-                                                Users
-                                                </a>
                                             </div>
                                             </div>
-                                        </div>
-
-                                        <div className="mt-5 flex justify-center sm:mt-0 bg-reach-red">
-                                            {dataUsers.map((user) => (
-                                                <div key={user.id}>{user.name}</div>
-                                            ))}
                                         </div>
 
                                         <div className="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
@@ -263,46 +244,11 @@ export default function Dashboard(props) {
 
                                     {/* Right column */}
                                     <div className="grid grid-cols-1 gap-4">
-                                    {/* Announcements */}
-                                    <section aria-labelledby="announcements-title">
-                                        <div className="rounded-lg bg-white overflow-hidden shadow">
-                                        <div className="p-6">
-                                            <h2 className="text-base font-medium text-gray-900" id="announcements-title">
-                                            Announcements
-                                            </h2>
-                                            <div className="flow-root mt-6">
-                                            <ul className="-my-5 divide-y divide-gray-200">
-                                                {announcements.map((announcement) => (
-                                                <li key={announcement.id} className="py-5">
-                                                    <div className="relative focus-within:ring-2 focus-within:ring-cyan-500">
-                                                    <h3 className="text-sm font-semibold text-gray-800">
-                                                        <a href={announcement.href} className="hover:underline focus:outline-none">
-                                                        {/* Extend touch target to entire panel */}
-                                                        <span className="absolute inset-0" aria-hidden="true" />
-                                                        {announcement.title}
-                                                        </a>
-                                                    </h3>
-                                                    <p className="mt-1 text-sm text-gray-600 line-clamp-2">{announcement.preview}</p>
-                                                    </div>
-                                                </li>
-                                                ))}
-                                            </ul>
-                                            </div>
-                                            <div className="mt-6">
-                                            <a
-                                                href={route('announcements')} 
-                                                active={route().current('announcements')}
-                                                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                                            >
-                                                View all
-                                            </a>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </section>
+                                        {/* Announcements */}
+                                        <AnnouncementsDashboard dataAnnouncements={dataAnnouncements}/>
 
                                         {/* Contact your manager */}
-                                        <ManagerList/>
+                                        <ManagerList dataManagers={dataManagers}/>
                                     </div>
                                 </div>
                             </main>
