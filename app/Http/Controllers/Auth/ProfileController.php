@@ -18,14 +18,15 @@ class ProfileController extends Controller
 
     public function usersList()
     {
-        return User::get();
+        return User::where('id', '!=', auth()->id())
+        ->get();
     }
     
     const FIELDS = ['phone', 'job_role', 'manager', 'start_date', 'street_address', 'postcode', 'city', 'date_of_birth'];
 
     public function update(Request $request)
     {
-        $user = User::first();
+        $user = User::findOrFail(auth()->id());
 
         foreach (self::FIELDS as $field) {
             if($request -> $field) {

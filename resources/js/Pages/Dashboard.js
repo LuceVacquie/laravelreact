@@ -93,41 +93,42 @@ function classNames(...classes) {
 
 export default function Dashboard(props) {
 
+    //Get all the users
     const [dataUsers, setDataUsers] = useState([])
 
-    // async function getUsersData (){
-    //     const response = await fetch('dashboard/users')
-    //     const data = await response.json()
-    //     return data;
-    // }
+    async function getUsersData (){
+        const response = await fetch('dashboard/users')
+        const data = await response.json()
+        return data;
+    }
 
     useEffect(() => {
-        async function getUsersData (){
-            let response = await fetch('dashboard/users')
-            response = await response.json()
-            setDataUsers(response);
+        const fetchData = async () => {
+        setDataUsers(await getUsersData())
         }
-        getUsersData()
+        fetchData()
+        return () => {
+            setDataUsers([])
+          };
     }, [])
-    console.log(dataUsers)
 
-    // useEffect(() => {
-    //     async function fetchMyAPI() {
-    //       let response = await fetch('api/data')
-    //       response = await response.json()
-    //       dataSet(response)
-    //     }
-    
-    //     fetchMyAPI()
-    //   }, [])
+    //Get the managers (where admin = 1)
+    const [dataManagers, setDataManagers] = useState([])
 
-    // let dataManagers = [];
-    // async function getManagersData (){
-    //     const response = await fetch('dashboard/managers')
-    //     return response.json()
-    // }
-    // dataManagers = getManagersData()
-    // console.log(dataManagers)
+    async function getManagersData (){
+        const response = await fetch('dashboard/managers')
+        const data = await response.json()
+        return data;
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+        setDataManagers(await getManagersData())
+        }
+        fetchData()
+    }, [])
+
+
 
     return (
         <Authenticated
@@ -185,7 +186,7 @@ export default function Dashboard(props) {
 
                                         <div className="mt-5 flex justify-center sm:mt-0 bg-reach-red">
                                             {dataUsers.map((user) => (
-                                                <div key={user.id}>{user.attributes.name}</div>
+                                                <div key={user.id}>{user.name}</div>
                                             ))}
                                         </div>
 
