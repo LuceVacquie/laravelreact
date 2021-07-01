@@ -3,8 +3,9 @@ import Authenticated from '@/Layouts/Authenticated';
 import Input from "../Components/Input";
 import { useForm } from "@inertiajs/inertia-react";
 
-  
-  export default function Projects(props) {
+export default function Projects(props) {
+
+    const tableHeads = ['Title', 'Client', 'Teammates', 'Status', 'Type', 'Due date'];
 
     const [isAddProjectActive, setIsAddProjectActive] =
         useState(false);
@@ -12,7 +13,7 @@ import { useForm } from "@inertiajs/inertia-react";
     const { data, setData, post } = useForm({
         title: "",
         client: "",
-        teammates: "",
+        teammates: props.auth.user.name,
         status: "",
         type: "",
         due_date:"",
@@ -36,6 +37,11 @@ import { useForm } from "@inertiajs/inertia-react";
         post(route("projects"));
     };
 
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+
     return (
         <Authenticated
             auth={props.auth}
@@ -52,57 +58,72 @@ import { useForm } from "@inertiajs/inertia-react";
                                         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                                             {/* Add a project */}
-                                            <div className="mt-4">
-                                                <h1 className="sr-only">
-                                                    Add
-                                                </h1>
-                                                <div className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
-                                                    <button
-                                                        onClick={() =>
-                                                            setIsAddProjectActive(
-                                                                !isAddProjectActive
-                                                            )
-                                                        }
-                                                    >
+                                            {!isAddProjectActive && (
+                                                <div className="my-4 w-full">
+                                                    <h1 className="sr-only">
                                                         Add
-                                                    </button>
-                                                    
+                                                    </h1>
+                                                    <div className="w-20 bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
+                                                        <button
+                                                            onClick={() =>
+                                                                setIsAddProjectActive(
+                                                                    !isAddProjectActive
+                                                                )
+                                                            }
+                                                        >
+                                                            Add
+                                                        </button>
+                                                        
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
+                                            
+                                            {isAddProjectActive && (
+                                                        <form onSubmit={submit} className="flex items-baseline">
+                                                            {Object.keys(data).map((key) => (
+                                                                <div key={key} className="px-2 py-4 whitespace-nowrap">
+                                                                    <Input
+                                                                        type={key === "due_date" ? "date" : "text"}
+                                                                        id={key + "-project"}
+                                                                        name={key}
+                                                                        value={
+                                                                            data.key
+                                                                        }
+                                                                        placeholder={capitalizeFirstLetter(key)}
+                                                                        autoComplete={key}
+                                                                        className="mt-4 w-full"
+                                                                        isFocused={true}
+                                                                        handleChange={
+                                                                            onHandleChange
+                                                                        }
+                                                                        required
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                                
+                                                                <button
+                                                                    type="submit"
+                                                                    className="h-1/2 relative p-3 border border-transparent rounded-md shadow-sm text-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                                >
+                                                                    Add
+                                                                </button>
+                                                        </form>
+                                                    )}
 
                                             <table className="min-w-full divide-y divide-gray-200">
                                                 <thead className="bg-gray-50">
                                                     <tr>
-                                                        <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                        >
-                                                            Project
-                                                        </th>
-                                                        <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                        >
-                                                            Client
-                                                        </th>
-                                                        <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                        >
-                                                            Teammate
-                                                        </th>
-                                                        <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                        >
-                                                            Status
-                                                        </th>
-                                                        <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                        >
-                                                            Type
-                                                        </th>
+
+                                                        {tableHeads.map((item) => (
+                                                            <th
+                                                            key={item}
+                                                            scope="col"
+                                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                            >
+                                                                {item}
+                                                            </th>
+                                                        ))}
+                                                        
                                                         <th scope="col" className="relative px-6 py-3">
                                                             <span className="sr-only">Edit</span>
                                                         </th>
@@ -110,109 +131,6 @@ import { useForm } from "@inertiajs/inertia-react";
                                                 </thead>
 
                                                 <tbody className="bg-white divide-y divide-gray-200">
-                                                    {isAddProjectActive && (
-                                                        <tr>
-                                                            <form onSubmit={submit} className="flex">
-                                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                                    <Input
-                                                                        type="text"
-                                                                        id="title-project"
-                                                                        name="title"
-                                                                        value={
-                                                                            data.title
-                                                                        }
-                                                                        placeholder="Title"
-                                                                        autoComplete="title"
-                                                                        className="mt-4 w-full"
-                                                                        isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                                    <Input
-                                                                        type="text"
-                                                                        id="client-project"
-                                                                        name="client"
-                                                                        value={
-                                                                            data.client
-                                                                        }
-                                                                        placeholder="Client"
-                                                                        autoComplete="client"
-                                                                        className="mt-4 w-full"
-                                                                        isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                                    <Input
-                                                                        type="text"
-                                                                        id="status-project"
-                                                                        name="status"
-                                                                        value={
-                                                                            data.status
-                                                                        }
-                                                                        placeholder="Status"
-                                                                        autoComplete="status"
-                                                                        className="mt-4 w-full h-32"
-                                                                        isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                                    <Input
-                                                                        type="text"
-                                                                        id="type-project"
-                                                                        name="type"
-                                                                        value={
-                                                                            data.type
-                                                                        }
-                                                                        placeholder="Type"
-                                                                        autoComplete="type"
-                                                                        className="mt-4 w-full h-32"
-                                                                        isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                </td>
-                                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                                    <Input
-                                                                        type="date"
-                                                                        id="due_date-project"
-                                                                        name="due_date"
-                                                                        value={
-                                                                            data.due_date
-                                                                        }
-                                                                        placeholder="Due date"
-                                                                        autoComplete="due_date"
-                                                                        className="mt-4 w-full h-32"
-                                                                        isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                </td>
-
-                                                                <button
-                                                                    type="submit"
-                                                                    className="mt-4 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                                >
-                                                                    Add project
-                                                                </button>
-                                                            </form>
-                                                        </tr>
-                                                    )}
                                                 {sorted_projects.map((project) => (
                                                     <tr key={project.title}>
                                                         <td className="px-6 py-4 whitespace-nowrap">

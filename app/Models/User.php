@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use App\Models\Project;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Define user_project relationship
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 
 }

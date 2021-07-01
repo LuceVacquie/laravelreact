@@ -19,8 +19,9 @@ class ProjectController extends Controller
         return Project::all();
     }
 
-    public function store(Request $request)
+    public function store (Request $request)
     {
+
         $request->validate([
             'title' => 'required|string|max:255',
             'client' => 'required|string|max:255',
@@ -30,6 +31,7 @@ class ProjectController extends Controller
             'due_date' => 'required|date',
         ]);
 
+
         $project = Project::create([
             'title' => $request->title,
             'client' => $request->client,
@@ -38,7 +40,6 @@ class ProjectController extends Controller
             'type' => $request->type,
             'due_date' => $request->due_date,
         ]);
-
         return redirect(route('projects'));
     }
 }

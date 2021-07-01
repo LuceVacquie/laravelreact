@@ -39,10 +39,6 @@ Route::get('/calendar', function () {
     return Inertia::render('Calendar');
 })->middleware(['auth', 'verified'])->name('calendar');
 
-Route::get('/projects', function () {
-    return Inertia::render('Projects');
-})->middleware(['auth', 'verified'])->name('projects');
-
 Route::get('/team', function () {
     return Inertia::render('Team');
 })->middleware(['auth', 'verified'])->name('team');

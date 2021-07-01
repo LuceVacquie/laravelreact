@@ -107,7 +107,7 @@ export default function Authenticated({ auth, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            <ResponsiveNavLink method="post" href={route('logout')} as="a">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>

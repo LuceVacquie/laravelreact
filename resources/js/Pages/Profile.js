@@ -5,11 +5,6 @@ import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
 
 import EditProfileForm from './EditProfileForm';
 
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-
 export default function Profile( props ) {
 
     const [editMode, setEditMode] = useState(false)

@@ -20,3 +20,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('App.Models.Announcement.{id}', function ($announcement, $id) {
     return (int) $announcement->id === (int) $id;
 });
+
+Broadcast::channel('App.Models.Project.{id}', function ($project, $id) {
+    return (int) $project->id === (int) $id;
+});
