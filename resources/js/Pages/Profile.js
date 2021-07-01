@@ -1,8 +1,8 @@
 import Authenticated from '@/Layouts/Authenticated';
-import React,  { useState } from 'react';
+import React,  { useState, useEffect } from 'react';
 import { MenuIcon } from '@heroicons/react/outline';
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
-
+import ProjectSection from '../Components/ProjectSection';
 import EditProfileForm from './EditProfileForm';
 
 export default function Profile( props ) {
@@ -12,6 +12,22 @@ export default function Profile( props ) {
     const toggleEditMode = () => {
         setEditMode(!editMode)
     }
+
+    //Get the auth user's projects
+    const [dataProjects, setDataProjects] = useState([])
+
+    async function getDataProjects (){
+        const response = await fetch('profile/projects')
+        const data = await response.json()
+        return data;
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+        setDataProjects(await getDataProjects())
+        }
+        fetchData()
+    }, [])
 
     return (
         <Authenticated
@@ -157,6 +173,7 @@ export default function Profile( props ) {
                                     }
 
                                 </div>
+                                <ProjectSection dataProjects={dataProjects}/>
                             </div>
                         </div>
                     </div>

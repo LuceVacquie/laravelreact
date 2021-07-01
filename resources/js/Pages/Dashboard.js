@@ -106,7 +106,7 @@ export default function Dashboard(props) {
         fetchData()
     }, [])
 
-    //Get the managers (where admin = 1)
+    //Get the announcements
     const [dataAnnouncements, setDataAnnouncements] = useState([])
 
     async function getAnnouncementsData (){

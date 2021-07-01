@@ -5,7 +5,6 @@ import { useForm } from "@inertiajs/inertia-react";
 
 export default function Projects(props) {
 
-    const tableHeads = ['Title', 'Client', 'Teammates', 'Status', 'Type', 'Due date'];
 
     const [isAddProjectActive, setIsAddProjectActive] =
         useState(false);
@@ -13,7 +12,7 @@ export default function Projects(props) {
     const { data, setData, post } = useForm({
         title: "",
         client: "",
-        teammates: props.auth.user.name,
+        teammates: " ",
         status: "",
         type: "",
         due_date:"",
@@ -22,8 +21,8 @@ export default function Projects(props) {
     const projects = props.data;
 
     var sorted_projects = projects.sort((a,b) => {
-        return new Date(a.due_date).getTime() - 
-            new Date(b.due_date).getTime()
+        return new Date(b.due_date).getTime() - 
+            new Date(a.due_date).getTime()
     }).reverse();
 
     const onHandleChange = ({ target }) => {
@@ -90,7 +89,7 @@ export default function Projects(props) {
                                                                             data.key
                                                                         }
                                                                         placeholder={capitalizeFirstLetter(key)}
-                                                                        autoComplete={key}
+                                                                        autoComplete={capitalizeFirstLetter(key)}
                                                                         className="mt-4 w-full"
                                                                         isFocused={true}
                                                                         handleChange={
@@ -114,13 +113,13 @@ export default function Projects(props) {
                                                 <thead className="bg-gray-50">
                                                     <tr>
 
-                                                        {tableHeads.map((item) => (
+                                                        {Object.keys(data).map((key) =>  (
                                                             <th
-                                                            key={item}
+                                                            key={key}
                                                             scope="col"
                                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                                             >
-                                                                {item}
+                                                                {capitalizeFirstLetter(key)}
                                                             </th>
                                                         ))}
                                                         
@@ -132,7 +131,7 @@ export default function Projects(props) {
 
                                                 <tbody className="bg-white divide-y divide-gray-200">
                                                 {sorted_projects.map((project) => (
-                                                    <tr key={project.title}>
+                                                    <tr key={project.id}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="flex items-center">
                                                                 <div className="text-sm text-gray-900">{project.title}</div>
@@ -143,7 +142,7 @@ export default function Projects(props) {
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             {/* <img src={project.teammate} alt="Main Dev"/> */}
-                                                            <p></p>
+                                                            <div className="text-sm text-gray-900">{project.teammates.concat(props.auth.user.name)}</div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.status}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.type}</td>

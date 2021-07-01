@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 
@@ -40,6 +41,15 @@ class ProjectController extends Controller
             'type' => $request->type,
             'due_date' => $request->due_date,
         ]);
+
+        $user = User::findOrFail(auth()->id());
+        $project->users()->attach($user);
+        
         return redirect(route('projects'));
+    }
+
+    public function getProjectUser()
+    {
+        return $users = Project::findOrFail(auth()->id())->users()->get();
     }
 }

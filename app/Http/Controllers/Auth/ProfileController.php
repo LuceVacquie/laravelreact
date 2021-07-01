@@ -21,6 +21,12 @@ class ProfileController extends Controller
         return User::where('id', '!=', auth()->id())
         ->get();
     }
+
+    public function projectsList()
+    {
+        return $project = User::where(auth()->id())->projects()
+        ->get();
+    }
     
     const FIELDS = ['phone', 'job_role', 'manager', 'start_date', 'street_address', 'postcode', 'city', 'date_of_birth'];
 
@@ -64,4 +70,6 @@ class ProfileController extends Controller
 
         return redirect(route('profile'));
     }
+
+    
 }
