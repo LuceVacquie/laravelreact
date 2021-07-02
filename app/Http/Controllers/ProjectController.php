@@ -22,18 +22,17 @@ class ProjectController extends Controller
 
     public function store (Request $request)
     {
-
         $request->validate([
             'title' => 'required|string|max:255',
             'client' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
+            'author' => 'string|max:255',
             'teammates' => 'string|max:1000',
             'status' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'due_date' => 'required|date',
         ]);
 
-
+        dd('hello');
         $project = Project::create([
             'title' => $request->title,
             'client' => $request->client,
@@ -59,4 +58,20 @@ class ProjectController extends Controller
     {
         return $users = Project::findOrFail($id)->users()->get();
     }
+
+    const FIELDS = ['title', 'client', 'author', 'teammates', 'status', 'type', 'due_date'];
+
+    public function update(Request $request)
+    {
+        $user = User::findOrFail(auth()->id());
+
+        foreach (self::FIELDS as $field) {
+            if($request -> $field) {
+                $user->$field = $request->$field;
+                $user->save();
+            }
+        }
+        return redirect(route('projects'));
+    }
+
 }

@@ -1,20 +1,13 @@
 import React from 'react'
 
-const Search = ({handleSearch}) => {
-
-    const onChange = ({target}) => {
-        return handleSearch(target.value)
-    }
+const Search = ({filteredNames}) => {
 
     return (
-        <div>
-            <label htmlFor="search">Search a teammate</label>
-                <input 
-                    type="text"
-                    name="search" 
-                    onChange={onChange}
-                />
-        </div>
+        <ul>
+            {filteredNames.map(name => {
+                <li>{name}</li>
+            })}
+        </ul>
     )
 }
 

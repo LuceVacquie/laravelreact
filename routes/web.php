@@ -95,6 +95,8 @@ Route::get('/profile/projects', [ProjectController::class, 'getUserProjects'])->
 
 Route::get('/project/{id}/users', [ProjectController::class, 'getProjectUsers'])->middleware(['auth', 'verified'])->name('project/users');
 
+Route::post('/project', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('projects.update');
+
 
 require __DIR__.'/auth.php';
 

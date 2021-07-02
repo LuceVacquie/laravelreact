@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Authenticated from '@/Layouts/Authenticated';
 import Input from "../Components/Input";
-// import Search from "../Components/SearchTeammates";
+import Search from "../Components/SearchTeammates";
 import { useForm } from "@inertiajs/inertia-react";
+import TableRow from '../Components/TableRowProject';
+import TableRowEdit from "@/Components/TableRowProjectEdit";
+
 
 export default function Projects(props) {
 
@@ -10,23 +13,18 @@ export default function Projects(props) {
     const [isAddProjectActive, setIsAddProjectActive] =
         useState(false);
 
+    
+    
+    //Post the projects data to projects_table
     const { data, setData, post } = useForm({
         title: "",
         client: "",
-        author: props.auth.user.name,
-        teammates: " ",
+        author: "",
+        teammates: "",
         status: "",
         type: "",
         due_date:"",
     });
-
-    const projects = props.data;
-
-    var sorted_projects = projects.sort((a,b) => {
-        return new Date(b.due_date).getTime() - 
-            new Date(a.due_date).getTime()
-    }).reverse();
-
     const onHandleChange = ({ target }) => {
         const { name, value } = target;
         setData(name, value);
@@ -38,43 +36,52 @@ export default function Projects(props) {
         post(route("projects"));
     };
 
+    //Get the projects data from projects_table 
+    //and sort them by due date
+    const projects = props.data;
+
+    var sorted_projects = projects.sort((a,b) => {
+        return new Date(b.due_date).getTime() - 
+            new Date(a.due_date).getTime()
+    }).reverse();
+
+
+
+    //Get the input's placeholder to have a capital first letter
     const capitalizeFirstLetter = string => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     
-    const colorUrgentProject = () => {
 
-        for(let i = 0 ; i < sorted_projects.length ; i++){
 
-            // parse a date in yyyy-mm-dd format
-            function parseDate(input) {
-                var parts = input.match(/(\d+)/g);
-                // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-                return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
-            }
+    //Project line will be red if the project is due in less than 2 weeks
+    const colorUrgentProject = (projectDate) => {
 
-            let color;
-            const setColor = () => {
-                const date1 = parseDate(sorted_projects[i].due_date).getTime()
-                const date2 = new Date().getTime()
-
-                const diffTime = date1 - date2;
-                const diffDate = diffTime / (1000 * 3600 * 24)
-
-                if (diffDate < 15) {
-                    color = "red";
-                } else {
-                    color = "blue"
-                }
-                console.log(diffDate)
-                return setColor()
-            }
+        // parse a date in yyyy-mm-dd format
+        function parseDate(input) {
+            var parts = input.match(/(\d+)/g);
+            // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+            return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
         }
+
+        const date1 = parseDate(projectDate).getTime()
+        const date2 = new Date().getTime()
+
+        const diffTime = date1 - date2;
+        const diffDate = diffTime / (1000 * 3600 * 24)
+
+        if (diffDate < 15) {
+            let color;
+            return color = "red";
+        }
+        
     }
     
+
+
     //Teammates search bar
     //1.Get all the user's name except auth user
-    const [dataUsers, setDataUsers] = useState([])
+    const [usersNames, setUsersNames] = useState([])
 
     async function getUsersName (){
         const response = await fetch('dashboard/users')
@@ -88,35 +95,50 @@ export default function Projects(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-        setDataUsers(await getUsersName())
+            setUsersNames(await getUsersName())
         }
         fetchData()
         return () => {
-            setDataUsers([])
+            setUsersNames([])
           };
     }, [])
-    
-    
 
     //2. Set the state
     const [searchQuery, setSearchQuery] = useState("")
-    const [filteredName, setFilteredname] = useState("")
 
-    // const displayNames = dataUsers.map(user => {
-    //     return (
-    //         <li>{user}</li>
-    //     )
-    // })
 
     //3. Handle onChange input
-    const handleSearch = ({target}) => {
+    const editSearchQuery = ({target}) => {
         setSearchQuery(target.value)
-        dataUsers.map(user => {
-            if(user.includes(searchQuery)){
-                setFilteredname(user)
-            }
+    }
+
+    const handleSearch = () => {
+        return usersNames.filter(name => {
+            name.toLowerCase().includes(searchQuery.toLowerCase())
+        })
+
+    }
+
+
+    //Edit a project
+    const [inEditMode, setInEditMode] =
+        useState({
+            status: false,
+            rowKey: null
+        });
+    
+    const toggleEditMode = (id) => {
+        setInEditMode({
+            status: true,
+            rowKey: id
         })
     }
+    
+    const submitUpdate = (e) => {
+        e.preventDefault();
+        setInEditMode(false);
+        post(route('projects.update'));
+    };
 
     return (
         <Authenticated
@@ -169,19 +191,17 @@ export default function Projects(props) {
                                                                         type={key === "due_date" ? "date" : "text"}
                                                                         id={key + "-project"}
                                                                         name={key}
-                                                                        value={
-                                                                            data.key
-                                                                        }
+                                                                        value={key === "teammates" ? searchQuery : data.key}
                                                                         placeholder={capitalizeFirstLetter(key)}
                                                                         autoComplete={capitalizeFirstLetter(key)}
                                                                         className="mt-4 w-full"
                                                                         isFocused={true}
-                                                                        handleChange={key === "teammates" ? handleSearch : onHandleChange}
+                                                                        handleChange={key === "teammates" ? editSearchQuery : onHandleChange}
                                                                         required
                                                                     />
-                                                                    {data.key === "teammates" && (
-                                                                        <ul>{filteredName}</ul>
-                                                                    )}
+                                                                    
+                                                                    <Search filteredNames={handleSearch()}/>
+                                                                    
                                                                 </div>
                                                             ))}
                                                                 
@@ -194,69 +214,41 @@ export default function Projects(props) {
                                                         </form>
                                                     )}
 
-                                            <table className="min-w-full divide-y divide-gray-200">
-                                                <thead className="bg-gray-50">
-                                                    <tr>
+                                            <form onSubmit={submitUpdate}>
+                                                <table className="min-w-full divide-y divide-gray-200">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
 
-                                                        {Object.keys(data).map((key) =>  (
-                                                            <th
-                                                            key={key}
-                                                            scope="col"
-                                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                                            >
-                                                                {capitalizeFirstLetter(key)}
+                                                            {Object.keys(data).map((key) =>  (
+                                                                <th
+                                                                key={key}
+                                                                scope="col"
+                                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                                >
+                                                                    {capitalizeFirstLetter(key)}
+                                                                </th>
+                                                            ))}
+                                                            
+                                                            <th scope="col" className="relative px-6 py-3">
+                                                                <span className="sr-only">Edit</span>
                                                             </th>
-                                                        ))}
-                                                        
-                                                        <th scope="col" className="relative px-6 py-3">
-                                                            <span className="sr-only">Edit</span>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
+                                                        </tr>
+                                                    </thead>
 
-                                                <tbody className="bg-white divide-y divide-gray-200">
-                                                {sorted_projects.map((project) => (
-                                                    <tr key={project.id} style={{backgroundColor: colorUrgentProject()}}>
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="flex items-center">
-                                                                <div className="text-sm text-gray-900">{project.title}</div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{project.client}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{project.author}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            {/* <img src={project.teammate} alt="Main Dev"/> */}
-                                                            <div className="text-sm text-gray-900">{project.teammates}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{project.status}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{project.type}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{project.due_date}</div>
-                                                        </td>
-
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                            <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                                                            Edit
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                                </tbody>
-                                            </table>
+                                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    
+                                                            {sorted_projects.map((project) => {
+                                                                {return inEditMode.status && inEditMode.rowKey === project.id ?
+                                                                    <TableRowEdit project={project} onHandleChange={onHandleChange}/>
+                                                                    :
+                                                                    <TableRow project={project} colorUrgentProject={colorUrgentProject} toggleEditMode={toggleEditMode}/>
+                                                                }
+                                                            })}
+                                                    
+                                                    </tbody>
+                                                </table>
+                                            </form>
+                                            
                                         </div>
                                     </div>
                                 </div>

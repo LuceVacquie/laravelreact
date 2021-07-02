@@ -2,9 +2,6 @@ import React from 'react';
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
 import { useForm } from '@inertiajs/inertia-react';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function EditProfileForm({ setEditMode, ...props }) {
 
