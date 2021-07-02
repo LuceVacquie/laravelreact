@@ -1,6 +1,7 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import Authenticated from '@/Layouts/Authenticated';
 import Input from "../Components/Input";
+// import Search from "../Components/SearchTeammates";
 import { useForm } from "@inertiajs/inertia-react";
 
 export default function Projects(props) {
@@ -12,6 +13,7 @@ export default function Projects(props) {
     const { data, setData, post } = useForm({
         title: "",
         client: "",
+        author: props.auth.user.name,
         teammates: " ",
         status: "",
         type: "",
@@ -30,16 +32,91 @@ export default function Projects(props) {
         setData(name, value);
     };
 
-    const submit = (e) => {
+    const submit = e => {
         e.preventDefault();
         setIsAddProjectActive(!isAddProjectActive);
         post(route("projects"));
     };
 
-    function capitalizeFirstLetter(string) {
+    const capitalizeFirstLetter = string => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+    
+    const colorUrgentProject = () => {
 
+        for(let i = 0 ; i < sorted_projects.length ; i++){
+
+            // parse a date in yyyy-mm-dd format
+            function parseDate(input) {
+                var parts = input.match(/(\d+)/g);
+                // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+                return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+            }
+
+            let color;
+            const setColor = () => {
+                const date1 = parseDate(sorted_projects[i].due_date).getTime()
+                const date2 = new Date().getTime()
+
+                const diffTime = date1 - date2;
+                const diffDate = diffTime / (1000 * 3600 * 24)
+
+                if (diffDate < 15) {
+                    color = "red";
+                } else {
+                    color = "blue"
+                }
+                console.log(diffDate)
+                return setColor()
+            }
+        }
+    }
+    
+    //Teammates search bar
+    //1.Get all the user's name except auth user
+    const [dataUsers, setDataUsers] = useState([])
+
+    async function getUsersName (){
+        const response = await fetch('dashboard/users')
+        const data = await response.json()
+
+        const usersName = data.map(item => {
+            return item.name
+        })
+        return usersName;
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+        setDataUsers(await getUsersName())
+        }
+        fetchData()
+        return () => {
+            setDataUsers([])
+          };
+    }, [])
+    
+    
+
+    //2. Set the state
+    const [searchQuery, setSearchQuery] = useState("")
+    const [filteredName, setFilteredname] = useState("")
+
+    // const displayNames = dataUsers.map(user => {
+    //     return (
+    //         <li>{user}</li>
+    //     )
+    // })
+
+    //3. Handle onChange input
+    const handleSearch = ({target}) => {
+        setSearchQuery(target.value)
+        dataUsers.map(user => {
+            if(user.includes(searchQuery)){
+                setFilteredname(user)
+            }
+        })
+    }
 
     return (
         <Authenticated
@@ -76,6 +153,13 @@ export default function Projects(props) {
                                                     </div>
                                                 </div>
                                             )}
+                                            {/* <Search handleSearch={handleSearch}/>
+                                            <ul>
+                                                {filteredName}
+                                            </ul> */}
+                                            {/* <ul>
+                                                {displayNames}
+                                            </ul> */}
                                             
                                             {isAddProjectActive && (
                                                         <form onSubmit={submit} className="flex items-baseline">
@@ -92,11 +176,12 @@ export default function Projects(props) {
                                                                         autoComplete={capitalizeFirstLetter(key)}
                                                                         className="mt-4 w-full"
                                                                         isFocused={true}
-                                                                        handleChange={
-                                                                            onHandleChange
-                                                                        }
+                                                                        handleChange={key === "teammates" ? handleSearch : onHandleChange}
                                                                         required
                                                                     />
+                                                                    {data.key === "teammates" && (
+                                                                        <ul>{filteredName}</ul>
+                                                                    )}
                                                                 </div>
                                                             ))}
                                                                 
@@ -131,22 +216,38 @@ export default function Projects(props) {
 
                                                 <tbody className="bg-white divide-y divide-gray-200">
                                                 {sorted_projects.map((project) => (
-                                                    <tr key={project.id}>
+                                                    <tr key={project.id} style={{backgroundColor: colorUrgentProject()}}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="flex items-center">
                                                                 <div className="text-sm text-gray-900">{project.title}</div>
                                                             </div>
                                                         </td>
+
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="text-sm text-gray-900">{project.client}</div>
                                                         </td>
+
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">{project.author}</div>
+                                                        </td>
+
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             {/* <img src={project.teammate} alt="Main Dev"/> */}
-                                                            <div className="text-sm text-gray-900">{project.teammates.concat(props.auth.user.name)}</div>
+                                                            <div className="text-sm text-gray-900">{project.teammates}</div>
                                                         </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.status}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.type}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.due_date}</td>
+
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">{project.status}</div>
+                                                        </td>
+
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">{project.type}</div>
+                                                        </td>
+
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">{project.due_date}</div>
+                                                        </td>
+
                                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                             <a href="#" className="text-indigo-600 hover:text-indigo-900">
                                                             Edit

@@ -91,7 +91,9 @@ Route::post('/projects', [ProjectController::class, 'store'])->middleware(['auth
 
 Route::get('/projects', [ProjectController::class, 'index'])->middleware(['auth', 'verified'])->name('projects');
 
-Route::get('/profile/projects', [ProjectController::class, 'projectsList'])->middleware(['auth', 'verified'])->name('profile/projects');
+Route::get('/profile/projects', [ProjectController::class, 'getUserProjects'])->middleware(['auth', 'verified'])->name('profile/projects');
+
+Route::get('/project/{id}/users', [ProjectController::class, 'getProjectUsers'])->middleware(['auth', 'verified'])->name('project/users');
 
 
 require __DIR__.'/auth.php';

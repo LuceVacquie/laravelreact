@@ -26,6 +26,7 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'client' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
             'teammates' => 'string|max:1000',
             'status' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -36,6 +37,7 @@ class ProjectController extends Controller
         $project = Project::create([
             'title' => $request->title,
             'client' => $request->client,
+            'author' => $request->author,
             'teammates' => $request->teammates,
             'status' => $request->status,
             'type' => $request->type,
@@ -44,12 +46,17 @@ class ProjectController extends Controller
 
         $user = User::findOrFail(auth()->id());
         $project->users()->attach($user);
-        
+
         return redirect(route('projects'));
     }
 
-    public function getProjectUser()
+    public function getUserProjects()
     {
-        return $users = Project::findOrFail(auth()->id())->users()->get();
+        return $projects = User::findOrFail(auth()->id())->projects()->get();
+    }
+
+    public function getProjectUsers($id)
+    {
+        return $users = Project::findOrFail($id)->users()->get();
     }
 }
